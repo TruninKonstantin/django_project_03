@@ -1,4 +1,4 @@
-<form method="post" id="personForm" data-cities-url="{% url 'ajax_load_cities' %}" data-countries-url="{% url 'ajax_load_countries' %}" novalidate>
+<form method="post" id="outputPressureForm" data-cities-url="{% url 'ajax_load_cities' %}" data-countries-url="{% url 'ajax_load_countries' %}" novalidate>
     {% csrf_token %}
     <table>
         {{ form.as_table }}
@@ -7,23 +7,23 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
-    $("#id_country").change(function () {
-      var url = $("#personForm").attr("data-cities-url");
+    $("#id_group").change(function () {
+      var url = $("#outputPressureForm").attr("data-cities-url");
       var countryId = $(this).val();
 
       $.ajax({
         url: url,
         data: {
-          'country': countryId
+          'group': countryId
         },
         success: function (data) {
-          $("#id_city").html(data);
+          $("#id_material").html(data);
 
-          var countrySelect = document.getElementById("id_country");
+          var countrySelect = document.getElementById("id_group");
           var country_value = countrySelect.options[countrySelect.selectedIndex].text;
 
-          var citySelect = document.getElementById("id_city");
-          var city_value = citySelect.options[city.selectedIndex].text;
+          var citySelect = document.getElementById("id_material");
+          var city_value = citySelect.options[citySelect.selectedIndex].text;
 
           document.getElementById("id_calculated_value").setAttribute('value', country_value + '  --  ' + city_value);
         }
@@ -31,27 +31,24 @@
 
     });
 
-    $("#id_city").change(function () {
-      var url = $("#personForm").attr("data-countries-url");
+    $("#id_material").change(function () {
+      var url = $("#outputPressureForm").attr("data-countries-url");
       var cityId = $(this).val();
 
       $.ajax({
         url: url,
         data: {
-          'city': cityId
+          'material': cityId
         },
         success: function (data) {
-          $("#id_country").html(data);
+          $("#id_group").html(data);
 
-          var skillsSelect = document.getElementById("id_country");
+          var skillsSelect = document.getElementById("id_group");
           var country_value = skillsSelect.options[skillsSelect.selectedIndex].text;
 
-          var skillsSelect = document.getElementById("id_city");
+          var skillsSelect = document.getElementById("id_material");
           var city_value = skillsSelect.options[skillsSelect.selectedIndex].text;
 
-
-          <!--var country_value = document.getElementById("id_country").getAttribute('text');-->
-          <!--var city_value = document.getElementById("id_city").getAttribute('text');-->
           document.getElementById("id_calculated_value").setAttribute('value', country_value + '  --  ' + city_value);
         }
       });

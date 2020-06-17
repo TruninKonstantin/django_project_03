@@ -1,14 +1,14 @@
 from django import forms
 
-from .models import Person, City
+from .models import OutputPressure, Material
 
 
-class PersonForm(forms.ModelForm):
+class OutputPressureForm(forms.ModelForm):
     calculated_value = forms.CharField()
 
     class Meta:
-        model = Person
-        fields = ('country', 'city')
+        model = OutputPressure
+        fields = ('group', 'material')
 
 
 
@@ -16,11 +16,11 @@ class PersonForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        if 'country' in self.data:
+        if 'group' in self.data:
             try:
-                country_id = int(self.data.get('country'))
-                self.fields['city'].queryset = City.objects.filter(country_id=country_id).order_by('name')
+                group_id = int(self.data.get('group'))
+                self.fields['material'].queryset = Material.objects.filter(group_id=group_id).order_by('name')
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
+                pass  # invalid input from the client; ignore and fallback to empty material queryset
         elif self.instance.pk:
-            self.fields['city'].queryset = self.instance.country.city_set.order_by('name')
+            self.fields['material'].queryset = self.instance.group.material_set.order_by('name')

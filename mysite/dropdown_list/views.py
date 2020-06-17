@@ -2,38 +2,38 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from .forms import PersonForm
-from .models import Person, City, Country
+from .forms import OutputPressureForm
+from .models import OutputPressure, Material, Group
 
 
 # Create your views here.
 
 
 class PersonCreateView(CreateView):
-    model = Person
-    form_class = PersonForm
+    model = OutputPressure
+    form_class = OutputPressureForm
     template_name = 'dropdown_list/name_model.html'
     success_url = reverse_lazy('person_changelist')
 
-def load_cities(request):
-    country_id = request.GET.get('country')
-    if country_id == '':
-        cities = City.objects.order_by('name')
+def load_materials(request):
+    group_id = request.GET.get('group')
+    if group_id == '':
+        cities = Material.objects.order_by('name')
     else:
-        cities = City.objects.filter(country_id=country_id).order_by('name')
-    return render(request, 'dropdown_list/city_dropdown_list_options.html', {'cities': cities})
+        cities = Material.objects.filter(group_id=group_id).order_by('name')
+    return render(request, 'dropdown_list/material_dropdown_list_options.html', {'cities': cities})
 
-def load_countries(request):
-    city_id = request.GET.get('city')
-    if city_id == '':
-        countries = Country.objects.order_by('name')
-        return render(request, 'dropdown_list/country_dropdown_list_options.html', {'countries': countries})
+def load_groups(request):
+    material_id = request.GET.get('material')
+    if material_id == '':
+        countries = Group.objects.order_by('name')
+        return render(request, 'dropdown_list/group_dropdown_list_options.html', {'countries': countries})
     else:
 
-        field_name = 'country_id'
-        city = City.objects.get(id=city_id)
-        field_object = City._meta.get_field(field_name)
-        country_id = getattr(city, field_object.attname)
-        countries = Country.objects.filter(id=country_id).order_by('name')
+        field_name = 'group_id'
+        material = Material.objects.get(id=material_id)
+        field_object = Material._meta.get_field(field_name)
+        group_id = getattr(material, field_object.attname)
+        countries = Group.objects.filter(id=group_id).order_by('name')
 
-        return render(request, 'dropdown_list/country_dropdown_one.html', {'countries': countries})
+        return render(request, 'dropdown_list/group_dropdown_one.html', {'countries': countries})

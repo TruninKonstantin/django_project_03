@@ -4,8 +4,8 @@ from django.contrib import admin
 
 from django.contrib import admin
 
-from .models import Country, City, Person
+from .models import Group, Material, OutputPressure
 
-admin.site.register(Country)
-admin.site.register(City)
-admin.site.register(Person)
+admin.site.register(Group)
+admin.site.register(Material)
+admin.site.register(OutputPressure)
