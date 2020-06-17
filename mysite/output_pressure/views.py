@@ -12,7 +12,7 @@ from .models import OutputPressure, Material, Group
 class PersonCreateView(CreateView):
     model = OutputPressure
     form_class = OutputPressureForm
-    template_name = 'dropdown_list/name_model.html'
+    template_name = 'output_pressure/name_model.html'
     success_url = reverse_lazy('output_pressure_calculation')
 
 def load_materials(request):
@@ -21,13 +21,13 @@ def load_materials(request):
         materials = Material.objects.order_by('name')
     else:
         materials = Material.objects.filter(group_id=group_id).order_by('name')
-    return render(request, 'dropdown_list/material_dropdown_list_options.html', {'materials': materials})
+    return render(request, 'output_pressure/material_dropdown_list_options.html', {'materials': materials})
 
 def load_groups(request):
     material_id = request.GET.get('material')
     if material_id == '':
         groups = Group.objects.order_by('name')
-        return render(request, 'dropdown_list/group_dropdown_list_options.html', {'groups': groups})
+        return render(request, 'output_pressure/group_dropdown_list_options.html', {'groups': groups})
     else:
 
         field_name = 'group_id'
@@ -36,4 +36,4 @@ def load_groups(request):
         group_id = getattr(material, field_object.attname)
         groups = Group.objects.filter(id=group_id).order_by('name')
 
-        return render(request, 'dropdown_list/group_dropdown_one.html', {'groups': groups})
+        return render(request, 'output_pressure/group_dropdown_one.html', {'groups': groups})
