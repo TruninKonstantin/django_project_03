@@ -1,16 +1,12 @@
 from django.shortcuts import render
-
-from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView
 from django.urls import reverse_lazy
-
-# Create your views here.
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader
+from django.views.generic import CreateView
 
 from .forms import PersonForm
-
 from .models import Person, City, Country
+
+
+# Create your views here.
 
 
 class PersonCreateView(CreateView):
