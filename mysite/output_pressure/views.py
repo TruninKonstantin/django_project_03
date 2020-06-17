@@ -12,7 +12,7 @@ from .models import OutputPressure, Material, Group
 class PersonCreateView(CreateView):
     model = OutputPressure
     form_class = OutputPressureForm
-    template_name = 'output_pressure/name_model.html'
+    template_name = 'output_pressure/pressure_calculation.html'
     success_url = reverse_lazy('output_pressure_calculation')
 
 def load_materials(request):
