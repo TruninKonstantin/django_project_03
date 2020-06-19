@@ -73,8 +73,9 @@
           'group': groupId
         },
         success: function (data) {
-          <!--document.getElementById("id_calculated_value").setAttribute('value',"upd");-->
-          $("#id_calculated_value").html(data);
+          document.getElementById("id_calculated_value").setAttribute('value',data);
+          <!--$("#id_calculated_value").html(data);-->
+
 
           <!--updateCalculatedValue();-->
         }

@@ -58,5 +58,7 @@ def load_temperatures_pressures(request):
     some_values.append([p.temperature_100 for p in pressures])
     some_values.append([p.temperature_150 for p in pressures])
 
+    # OutputPressureForm.calculated_value = some_values
+
 
     return render(request, 'output_pressure/temperatures_pressures_dropdown_list_options.html', {'pressures': some_values})
