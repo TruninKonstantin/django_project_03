@@ -25,7 +25,7 @@ class Material(models.Model):
     def __str__(self):
         return self.name
 
-
+# TODO rename to PressureClass
 class MaterialClass(models.Model):
     name = models.CharField(max_length=30)
 

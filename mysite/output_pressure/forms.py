@@ -2,7 +2,7 @@ from django import forms
 
 from .models import OutputPressure, Material
 
-
+# TODO rename to ResultsForm
 class OutputPressureForm(forms.ModelForm):
     input_temperature = forms.FloatField()
     minimum_temperature = forms.FloatField()
@@ -23,11 +23,11 @@ class OutputPressureForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        if 'group' in self.data:
-            try:
-                group_id = int(self.data.get('group'))
-                self.fields['material'].queryset = Material.objects.filter(group_id=group_id).order_by('name')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty material queryset
-        elif self.instance.pk:
-            self.fields['material'].queryset = self.instance.group.material_set.order_by('name')
+        # if 'group' in self.data:
+        #     try:
+        #         group_id = int(self.data.get('group'))
+        #         self.fields['material'].queryset = Material.objects.filter(group_id=group_id).order_by('name')
+        #     except (ValueError, TypeError):
+        #         pass  # invalid input from the client; ignore and fallback to empty material queryset
+        # elif self.instance.pk:
+        #     self.fields['material'].queryset = self.instance.group.material_set.order_by('name')

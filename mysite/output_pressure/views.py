@@ -8,7 +8,7 @@ from .models import OutputPressure, Material, Group, Pressure
 
 # Create your views here.
 
-
+# TODO rename
 class PersonCreateView(CreateView):
     model = OutputPressure
     form_class = OutputPressureForm
@@ -59,6 +59,7 @@ def load_temperatures_pressures(request):
     some_values.append([p.temperature_150 for p in pressures])
 
     # OutputPressureForm.calculated_value = some_values
+    # some_values = "aaa"
 
 
     return render(request, 'output_pressure/temperatures_pressures_dropdown_list_options.html', {'pressures': some_values})
