@@ -4,8 +4,11 @@ from django.contrib import admin
 
 from django.contrib import admin
 
-from .models import Group, Material, OutputPressure
+from .models import Group, Material, OutputPressure, MaterialClass, Pressure, Standard
 
+admin.site.register(Standard)
 admin.site.register(Group)
 admin.site.register(Material)
+admin.site.register(Pressure)
+admin.site.register(MaterialClass)
 admin.site.register(OutputPressure)

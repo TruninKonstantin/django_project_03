@@ -1,4 +1,9 @@
-<form method="post" id="outputPressureForm" data-materials-url="{% url 'ajax_load_materials' %}" data-groups-url="{% url 'ajax_load_groups' %}" novalidate>
+<form method="post"
+      id="outputPressureForm"
+      data-materials-url="{% url 'ajax_load_materials' %}"
+      data-groups-url="{% url 'ajax_load_groups' %}"
+      data-temperatures-pressures-url="{% url 'ajax_load_temperatures_pressures' %}"
+      novalidate>
     {% csrf_token %}
     <table>
         {{ form.as_table }}
@@ -6,7 +11,7 @@
 </form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script>
+<script>
 
     function updateCalculatedValue() {
         var groupSelect = document.getElementById("id_group");
@@ -38,12 +43,12 @@
 
     $("#id_material").change(function () {
       var url = $("#outputPressureForm").attr("data-groups-url");
-      var cityId = $(this).val();
+      var materialId = $(this).val();
 
       $.ajax({
         url: url,
         data: {
-          'material': cityId
+          'material': materialId
         },
         success: function (data) {
           $("#id_group").html(data);
@@ -52,8 +57,33 @@
         }
       });
     });
+      
+    $("#id_material_class").change(function () {
+      var url = $("#outputPressureForm").attr("data-temperatures-pressures-url");
+      var materialClassId = $(this).val();
+      var groupId = $(document.getElementById("id_group")).val();
+
+      document.getElementById("id_minimum_temperature").setAttribute('value',materialClassId);
+      document.getElementById("id_maximum_temperature").setAttribute('value',groupId);
+
+      $.ajax({
+        url: url,
+        data: {
+          'material_class': materialClassId,
+          'group': groupId
+        },
+        success: function (data) {
+          <!--document.getElementById("id_calculated_value").setAttribute('value',"upd");-->
+          $("#id_calculated_value").html(data);
+
+          <!--updateCalculatedValue();-->
+        }
+      });
+    });
 
 
 
 
-  </script>
+
+
+</script>

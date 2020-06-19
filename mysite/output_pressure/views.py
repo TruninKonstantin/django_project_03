@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from .forms import OutputPressureForm
-from .models import OutputPressure, Material, Group
+from .models import OutputPressure, Material, Group, Pressure
 
 
 # Create your views here.
@@ -37,3 +37,26 @@ def load_groups(request):
         groups = Group.objects.filter(id=group_id).order_by('name')
 
         return render(request, 'output_pressure/group_dropdown_one.html', {'groups': groups})
+
+
+def load_temperatures_pressures(request):
+    material_class_id = request.GET.get('material_class')
+    group_id = request.GET.get('group')
+
+    pressures = Pressure.objects.filter(group_id=group_id).filter(material_class_id=material_class_id).order_by('name')
+    #
+    # field_name = 'temperature_50'
+    # obj = Pressure.objects.filter(group_id=group_id).filter(material_class_id=material_class_id)
+    # field_object = Pressure._meta.get_field(field_name)
+    # field_value = getattr(obj, field_object.attname)
+    print([p.temperature_50 for p in pressures])
+    print([p.temperature_100 for p in pressures])
+    print([p.temperature_150 for p in pressures])
+
+    some_values = []
+    some_values.append([p.temperature_50 for p in pressures])
+    some_values.append([p.temperature_100 for p in pressures])
+    some_values.append([p.temperature_150 for p in pressures])
+
+
+    return render(request, 'output_pressure/temperatures_pressures_dropdown_list_options.html', {'pressures': some_values})

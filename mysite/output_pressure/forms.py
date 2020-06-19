@@ -4,14 +4,17 @@ from .models import OutputPressure, Material
 
 
 class OutputPressureForm(forms.ModelForm):
-    calculated_value = forms.CharField()
+    input_temperature = forms.FloatField()
+    minimum_temperature = forms.FloatField()
+    maximum_temperature = forms.FloatField()
+    minimum_pressure = forms.FloatField()
+    maximum_pressure = forms.FloatField()
+    calculated_value = forms.CharField(label="calculated_value", widget=forms.Select())
+    # calculated_value = forms.CharField()
 
     class Meta:
         model = OutputPressure
-        fields = ('group', 'material')
-
-
-
+        fields = ('standard', 'group', 'material', 'material_class')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
