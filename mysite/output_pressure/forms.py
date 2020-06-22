@@ -1,14 +1,13 @@
 from django import forms
 
-from .models import OutputPressure, Material
+from .models import Results, Material
 
-# TODO rename to ResultsForm
-class OutputPressureForm(forms.ModelForm):
+class ResultsForm(forms.ModelForm):
     input_temperature = forms.FloatField()
-    minimum_temperature = forms.FloatField()
-    maximum_temperature = forms.FloatField()
-    minimum_pressure = forms.FloatField()
-    maximum_pressure = forms.FloatField()
+    # minimum_temperature = forms.FloatField()
+    # maximum_temperature = forms.FloatField()
+    # minimum_pressure = forms.FloatField()
+    # maximum_pressure = forms.FloatField()
     calculated_value = forms.CharField()
     # calculated_value = forms.CharField(label="calculated_value", widget=forms.Select())
     # calculated_value = forms.CharField(widget=forms.TextInput(attrs={
@@ -18,8 +17,8 @@ class OutputPressureForm(forms.ModelForm):
     #         }))
 
     class Meta:
-        model = OutputPressure
-        fields = ('standard', 'group', 'material', 'material_class')
+        model = Results
+        fields = ('standard', 'group', 'material', 'pressure_class')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

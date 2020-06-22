@@ -16,24 +16,24 @@
     function updateCalculatedValueWithInterpolation() {
       var url = $("#outputPressureForm").attr("data-temperatures-pressures-url");
 
-      var materialClassId = $(document.getElementById("id_material_class")).val();
+      var pressureClassId = $(document.getElementById("id_pressure_class")).val();
       var groupId = $(document.getElementById("id_group")).val();
       var inputTemperature = $(document.getElementById("id_input_temperature")).val();
 
-      document.getElementById("id_minimum_temperature").setAttribute('value',materialClassId);
-      document.getElementById("id_maximum_temperature").setAttribute('value',groupId);
+      if( pressureClassId && groupId && inputTemperature) {
 
-      $.ajax({
-        url: url,
-        data: {
-          'material_class': materialClassId,
-          'group': groupId,
-          'input_temperature': inputTemperature
-        },
-        success: function (data) {
-          document.getElementById("id_calculated_value").setAttribute('value',data);
-        }
-      });
+          $.ajax({
+            url: url,
+            data: {
+              'pressure_class': pressureClassId,
+              'group': groupId,
+              'input_temperature': inputTemperature
+            },
+            success: function (data) {
+              document.getElementById("id_calculated_value").setAttribute('value',data);
+            }
+          });
+      }
     }
 
     $("#id_group").change(function () {
@@ -69,7 +69,7 @@
       });
     });
 
-    $("#id_material_class").change(function () {
+    $("#id_pressure_class").change(function () {
       updateCalculatedValueWithInterpolation();
 
     });

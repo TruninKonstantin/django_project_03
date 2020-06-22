@@ -2,16 +2,15 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from .forms import OutputPressureForm
-from .models import OutputPressure, Material, Group, Pressure
+from .forms import ResultsForm
+from .models import Results, Material, Group, Pressure
 
 
 # Create your views here.
 
-# TODO rename
-class PersonCreateView(CreateView):
-    model = OutputPressure
-    form_class = OutputPressureForm
+class ResultView(CreateView):
+    model = Results
+    form_class = ResultsForm
     template_name = 'output_pressure/pressure_calculation.html'
     success_url = reverse_lazy('output_pressure_calculation')
 
@@ -42,38 +41,33 @@ def load_groups(request):
 
 
 def load_temperatures_pressures(request):
-    material_class_id = request.GET.get('material_class')
+    material_class_id = request.GET.get('pressure_class')
     group_id = request.GET.get('group')
     input_temperature = request.GET.get('input_temperature')
 
     pressures = Pressure.objects.filter(group_id=group_id).filter(material_class_id=material_class_id).order_by('name')
 
-    some_values = []
-    some_values.append([p.temperature_50 for p in pressures])
-    some_values.append([p.temperature_100 for p in pressures])
-    some_values.append([p.temperature_150 for p in pressures])
-
-    p = pressures.first()
-    all_fields = p._meta.get_fields()
-    field_temperature_lower_input = p._meta.get_field("temperature_50")
-    field_temperature_higher_input = p._meta.get_field("temperature_150")
+    pressure_object = pressures.first()
+    all_fields = pressure_object._meta.get_fields()
+    field_temperature_lower_input = pressure_object._meta.get_field("pressure_m29")
+    field_temperature_higher_input = pressure_object._meta.get_field("pressure_150")
 
     for field in all_fields:
-        if "temperature_" in field.name:
-            if float(field.name.split("temperature_")[1]) < float(input_temperature):
+        if "pressure_" in field.name:
+            if get_temperature_from_field_name(field) < float(input_temperature):
                 field_temperature_lower_input = field
-            if float(field.name.split("temperature_")[1]) > float(input_temperature):
+            if get_temperature_from_field_name(field) > float(input_temperature):
                 field_temperature_higher_input = field
                 break
 
-    print(field_temperature_lower_input.name)
-    print(get_field_value(field_temperature_lower_input.name, Pressure, p))
-    print(field_temperature_higher_input.name)
-    print(get_field_value(field_temperature_higher_input.name, Pressure, p))
-    print(interpolation(input_temperature, field_temperature_lower_input, field_temperature_higher_input, Pressure, p))
+    # print(field_temperature_lower_input.name)
+    # print(get_field_value(field_temperature_lower_input.name, Pressure, pressure_object))
+    # print(field_temperature_higher_input.name)
+    # print(get_field_value(field_temperature_higher_input.name, Pressure, pressure_object))
+    # print(interpolation(input_temperature, field_temperature_lower_input, field_temperature_higher_input, Pressure, pressure_object))
 
     some_values = interpolation(input_temperature, field_temperature_lower_input, field_temperature_higher_input,
-                                Pressure, p)
+                                Pressure, pressure_object)
 
     return render(request, 'output_pressure/temperatures_pressures_dropdown_list_options.html',
                   {'pressures': some_values})
@@ -84,10 +78,10 @@ def interpolation(input_temperature, field_temperature_lower_input, field_temper
     if field_temperature_lower_input.name == field_temperature_higher_input.name:
         output_value = float(get_field_value(field_temperature_lower_input.name, MyModel, my_model_obj))
     else:
-        x_one = float(field_temperature_lower_input.name.split("temperature_")[1])
+        x_one = float(field_temperature_lower_input.name.split("pressure_")[1])
         y_one = float(get_field_value(field_temperature_lower_input.name, MyModel, my_model_obj))
 
-        x_two = float(field_temperature_higher_input.name.split("temperature_")[1])
+        x_two = float(field_temperature_higher_input.name.split("pressure_")[1])
         y_two = float(get_field_value(field_temperature_higher_input.name, MyModel, my_model_obj))
 
         input_temperature = float(input_temperature)
@@ -99,3 +93,9 @@ def interpolation(input_temperature, field_temperature_lower_input, field_temper
 def get_field_value(field_name, MyModel, my_model_obj):
     field_object = MyModel._meta.get_field(field_name)
     return field_object.value_from_object(my_model_obj)
+
+def get_temperature_from_field_name(field):
+    temperature = field.name.split("pressure_")[1]
+    if "m" in temperature:
+        temperature = temperature.split("m")[1]
+    return float(temperature)

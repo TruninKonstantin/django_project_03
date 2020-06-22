@@ -3,17 +3,35 @@ from django.contrib import admin
 # Register your models here.
 
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
+from .models import Group, Material, Results, PressureClass, Pressure, Standard
 
-from .models import Group, Material, OutputPressure, MaterialClass, Pressure, Standard
 
-class PressureAdmin(admin.ModelAdmin):
-    list_display = ('name', 'group', 'material_class', 'temperature_50', 'temperature_100', 'temperature_150')
+class GroupAdmin(ImportExportModelAdmin):
+    pass
 
-admin.site.register(Standard)
-admin.site.register(Group)
-admin.site.register(Material)
+
+class StandardAdmin(ImportExportModelAdmin):
+    pass
+
+
+class MaterialAdmin(ImportExportModelAdmin):
+    list_display = (
+        'name', 'standard', 'group')
+
+
+class PressureClassAdmin(ImportExportModelAdmin):
+    pass
+
+
+class PressureAdmin(ImportExportModelAdmin):
+    list_display = (
+        'name', 'group', 'material_class', 'pressure_m29', 'pressure_38', 'pressure_50', 'pressure_100',
+        'pressure_150')
+
+
+admin.site.register(Standard, StandardAdmin)
+admin.site.register(Group, GroupAdmin)
+admin.site.register(Material, MaterialAdmin)
 admin.site.register(Pressure, PressureAdmin)
-admin.site.register(MaterialClass)
-admin.site.register(OutputPressure)
-
-
+admin.site.register(PressureClass, PressureClassAdmin)
