@@ -1,3 +1,7 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'output_pressure/style.css' %}">
+
 <form method="post"
       id="outputPressureForm"
       data-materials-url="{% url 'ajax_load_materials' %}"

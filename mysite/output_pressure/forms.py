@@ -2,6 +2,7 @@ from django import forms
 
 from .models import Results, Material
 
+
 class ResultsForm(forms.ModelForm):
     input_temperature = forms.FloatField()
     # minimum_temperature = forms.FloatField()
@@ -9,6 +10,7 @@ class ResultsForm(forms.ModelForm):
     # minimum_pressure = forms.FloatField()
     # maximum_pressure = forms.FloatField()
     calculated_value = forms.CharField()
+
     # calculated_value = forms.CharField(label="calculated_value", widget=forms.Select())
     # calculated_value = forms.CharField(widget=forms.TextInput(attrs={
     #             'class': 'name-of-your-class',
@@ -18,7 +20,10 @@ class ResultsForm(forms.ModelForm):
 
     class Meta:
         model = Results
-        fields = ('standard', 'group', 'material', 'pressure_class')
+        fields = ('standard',
+                  'group',
+                  'material',
+                  'pressure_class')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
