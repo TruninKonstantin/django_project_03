@@ -9,12 +9,13 @@ class OutputPressureForm(forms.ModelForm):
     maximum_temperature = forms.FloatField()
     minimum_pressure = forms.FloatField()
     maximum_pressure = forms.FloatField()
+    calculated_value = forms.CharField()
     # calculated_value = forms.CharField(label="calculated_value", widget=forms.Select())
-    calculated_value = forms.CharField(widget=forms.TextInput(attrs={
-                'class': 'name-of-your-class',
-                # 'other-attribute': 'other-value',
-                'value':'some_value',
-            }))
+    # calculated_value = forms.CharField(widget=forms.TextInput(attrs={
+    #             'class': 'name-of-your-class',
+    #             # 'other-attribute': 'other-value',
+    #             'value':'some_value',
+    #         }))
 
     class Meta:
         model = OutputPressure
