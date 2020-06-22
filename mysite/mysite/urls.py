@@ -19,6 +19,6 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(pattern_name='person_changelist'), name='home'),
-    path('dropdown_list/', include('dropdown_list.urls')),
+    path('', RedirectView.as_view(pattern_name='output_pressure_calculation'), name='home'),
+    path('output_pressure/', include('output_pressure.urls')),
 ]

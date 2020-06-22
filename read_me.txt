@@ -1,9 +1,9 @@
 django-admin startproject mysite
 cd mysite
 python manage.py runserver
-python manage.py startapp dropdown_list
+python manage.py startapp output_pressure
 python manage.py migrate
-python manage.py makemigrations dropdown_list
-python manage.py sqlmigrate dropdown_list 0001
+python manage.py makemigrations output_pressure
+python manage.py sqlmigrate output_pressure 0001
 python manage.py migrate
 python manage.py createsuperuser

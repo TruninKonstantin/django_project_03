@@ -1,0 +1,87 @@
+<form method="post"
+      id="outputPressureForm"
+      data-materials-url="{% url 'ajax_load_materials' %}"
+      data-groups-url="{% url 'ajax_load_groups' %}"
+      data-temperatures-pressures-url="{% url 'ajax_load_temperatures_pressures' %}"
+      novalidate>
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+    function updateCalculatedValueWithInterpolation() {
+      var url = $("#outputPressureForm").attr("data-temperatures-pressures-url");
+
+      var materialClassId = $(document.getElementById("id_material_class")).val();
+      var groupId = $(document.getElementById("id_group")).val();
+      var inputTemperature = $(document.getElementById("id_input_temperature")).val();
+
+      document.getElementById("id_minimum_temperature").setAttribute('value',materialClassId);
+      document.getElementById("id_maximum_temperature").setAttribute('value',groupId);
+
+      $.ajax({
+        url: url,
+        data: {
+          'material_class': materialClassId,
+          'group': groupId,
+          'input_temperature': inputTemperature
+        },
+        success: function (data) {
+          document.getElementById("id_calculated_value").setAttribute('value',data);
+        }
+      });
+    }
+
+    $("#id_group").change(function () {
+      var url = $("#outputPressureForm").attr("data-materials-url");
+      var groupId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'group': groupId
+        },
+        success: function (data) {
+          $("#id_material").html(data);
+        }
+      });
+
+      updateCalculatedValueWithInterpolation();
+
+    });
+
+    $("#id_material").change(function () {
+      var url = $("#outputPressureForm").attr("data-groups-url");
+      var materialId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'material': materialId
+        },
+        success: function (data) {
+          $("#id_group").html(data);
+        }
+      });
+    });
+
+    $("#id_material_class").change(function () {
+      updateCalculatedValueWithInterpolation();
+
+    });
+
+    $("#id_input_temperature").change(function () {
+      updateCalculatedValueWithInterpolation();
+
+    });
+
+
+
+
+
+
+</script>
