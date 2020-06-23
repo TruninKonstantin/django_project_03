@@ -1,11 +1,13 @@
-{% load static %}
+<!--{% load static %}-->
 
-<link rel="stylesheet" type="text/css" href="{% static 'output_pressure/style.css' %}">
+<!--<link rel="stylesheet" type="text/css" href="{% static 'output_pressure/style.css' %}">-->
 
 <form method="post"
       id="resultsPressureForm"
       data-materials-url="{% url 'ajax_load_materials' %}"
+      data-re-load-materials-url="{% url 'ajax_re_load_materials' %}"
       data-groups-url="{% url 'ajax_load_groups' %}"
+      data-standards-url="{% url 'ajax_load_standards' %}"
       data-interpolated-pressure-url="{% url 'ajax_load_interpolated_pressure' %}"
       novalidate>
     {% csrf_token %}
@@ -41,13 +43,13 @@
             }
     }
 
-    $("#id_group").change(function () {
+    $("#id_standard").change(function () {
       var url = $("#resultsPressureForm").attr("data-materials-url");
-      var groupId = $(this).val();
+      var standardId = $(this).val();
       $.ajax({
         url: url,
         data: {
-          'group': groupId
+          'standard': standardId
         },
         success: function (data) {
           $("#id_material").html(data);
@@ -68,6 +70,31 @@
           $("#id_group").html(data);
         }
       });
+
+
+      var url = $("#resultsPressureForm").attr("data-standards-url");
+      var materialId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {
+          'material': materialId
+        },
+        success: function (data) {
+          $("#id_standard").html(data);
+        }
+      });
+
+      var materialId = $(this).val();
+      if( materialId == '') {
+          var url = $("#resultsPressureForm").attr("data-re-load-materials-url");
+          $.ajax({
+            url: url,
+            success: function (data) {
+                $("#id_material").html(data);
+            }
+          });
+      }
+
       updatePressureInterpolation();
     });
 
@@ -78,5 +105,6 @@
     $("#id_input_temperature").change(function () {
       updatePressureInterpolation();
     });
+
 
 </script>

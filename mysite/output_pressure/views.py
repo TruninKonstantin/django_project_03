@@ -4,7 +4,7 @@ from django.views.generic import CreateView
 
 from .constants.constants import Constants
 from .forms import ResultsForm
-from .models import Results, Material, Group, Pressure
+from .models import Results, Material, Group, Pressure, Standard
 
 
 class ResultView(CreateView):
@@ -14,16 +14,21 @@ class ResultView(CreateView):
     success_url = reverse_lazy('output_pressure_calculation')
 
 
-def load_materials(request):
-    group_id = request.GET.get('group')
-    if group_id == '':
-        materials = Material.objects.order_by('name')
-    else:
-        materials = Material.objects.filter(group_id=group_id).order_by('name')
+def reload_materials(request):
+    materials = Material.objects.order_by('name')
     return render(request, 'output_pressure/material_dropdown_list_options.html', {'materials': materials})
 
 
-def load_groups(request):
+def load_materials_on_standard_change(request):
+    standard_id = request.GET.get('standard')
+    if standard_id == '':
+        materials = Material.objects.order_by('name')
+    else:
+        materials = Material.objects.filter(standard_id=standard_id).order_by('name')
+    return render(request, 'output_pressure/material_dropdown_list_options.html', {'materials': materials})
+
+
+def load_groups_on_material_changed(request):
     material_id = request.GET.get('material')
     if material_id == '':
         groups = Group.objects.order_by('name')
@@ -36,6 +41,22 @@ def load_groups(request):
 
         groups = Group.objects.filter(id=group_id).order_by('name')
         return render(request, 'output_pressure/group_dropdown_one.html', {'groups': groups})
+
+
+def load_standards_on_material_changed(request):
+    material_id = request.GET.get('material')
+    if material_id == '':
+        standards = Standard.objects.order_by('name')
+        return render(request, 'output_pressure/standard_dropdown_list_options.html', {'standards': standards})
+    else:
+
+        field_name = 'standard_id'
+        material_obj = Material.objects.get(id=material_id)
+        standard_id = get_field_value(field_name, Material, material_obj)
+
+        standards = Standard.objects.filter(id=standard_id).order_by('name')
+        return render(request, 'output_pressure/standard_dropdown_one.html', {'standards': standards})
+
 
 # TODO there is no update of the fields on first material choose
 def interpolate_pressure(request):

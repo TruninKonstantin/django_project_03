@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Results, Material
+from .models import Results, Material, Standard
 
 
 class ResultsForm(forms.ModelForm):
@@ -18,3 +18,4 @@ class ResultsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['material'].queryset = Material.objects.order_by('name')
+        self.fields['standard'].queryset = Standard.objects.order_by('name')
