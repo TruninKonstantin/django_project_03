@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -58,7 +59,6 @@ def load_standards_on_material_changed(request):
         return render(request, 'output_pressure/standard_dropdown_one.html', {'standards': standards})
 
 
-# TODO there is no update of the fields on first material choose
 def interpolate_pressure(request):
     pressure_class_id = request.GET.get('pressure_class')
     material_id = request.GET.get('material')
@@ -90,8 +90,52 @@ def interpolate_pressure(request):
                                           field_temperature_higher_input,
                                           Pressure, pressure_object)
 
-    return render(request, 'output_pressure/interpolated_pressure.html',
-                  {'pressure': interpolated_pressure})
+    return render(request, 'output_pressure/for_data_transfer.html',
+                  {'data': interpolated_pressure})
+
+
+def update_table(request):
+    material_id = request.GET.get('material')
+
+    field_name = 'group_id'
+    material_obj = Material.objects.get(id=material_id)
+    group_id = get_field_value(field_name, Material, material_obj)
+
+    group_obj = Group.objects.get(id=group_id)
+    group = get_field_value("name", Group, group_obj)
+    data = "Table 2-" + str(group)
+
+    return render(request, 'output_pressure/for_data_transfer.html',
+                  {'data': data})
+
+
+def update_notes(request):
+    material_id = request.GET.get('material')
+    temperature = float(request.GET.get('temperature_value'))
+
+    material_obj = Material.objects.get(id=material_id)
+    material_minimum_temperature = get_field_value("t_min", Material, material_obj)
+    material_maximum_temperature = get_field_value("t_max", Material, material_obj)
+
+    if material_minimum_temperature < temperature < material_maximum_temperature:
+        str_note = "\nYou are inside material temperature range"
+        textarea_class = "color_white"
+
+    else:
+        str_note = "\nYou are outside material temperature range"
+        textarea_class = "color_red"
+
+    str_material_temperatures = ("Material minimum temperature ="
+                                 + str(material_minimum_temperature)
+                                 + "\nMaterial maximun temperature ="
+                                 + str(material_maximum_temperature))
+
+    str_01 = (str_material_temperatures + str_note)
+
+    data = {'str_01':str_01,'textarea_class':textarea_class}
+
+
+    return JsonResponse(data)
 
 
 def interpolation(input_temperature, field_temperature_lower_input, field_temperature_higher_input, MyModel,

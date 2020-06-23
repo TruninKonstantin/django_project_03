@@ -9,4 +9,6 @@ urlpatterns = [
     path('ajax/load-standards/', views.load_standards_on_material_changed, name='ajax_load_standards'),
     path('ajax/re-load-materials/', views.reload_materials, name='ajax_re_load_materials'),
     path('ajax/load-interpolated-pressure/', views.interpolate_pressure, name='ajax_load_interpolated_pressure'),
+    path('ajax/load-update-table/', views.update_table, name='ajax_update_table'),
+    path('ajax/load-update-notes/', views.update_notes, name='ajax_update_notes'),
 ]

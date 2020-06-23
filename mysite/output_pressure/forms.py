@@ -8,6 +8,14 @@ class ResultsForm(forms.ModelForm):
     interpolated_pressure = forms.CharField(
         label="Interpolated pressure, bar"
     )
+    table = forms.CharField()
+    notes = forms.CharField(required=False,
+                            widget=forms.Textarea(
+                                attrs={
+                                    # 'style': 'background-color: #FF0000;',
+                                    'class': 'color_white',
+                                }
+                            ))
 
     class Meta:
         model = Results

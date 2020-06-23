@@ -9,6 +9,8 @@
       data-groups-url="{% url 'ajax_load_groups' %}"
       data-standards-url="{% url 'ajax_load_standards' %}"
       data-interpolated-pressure-url="{% url 'ajax_load_interpolated_pressure' %}"
+      data-update-table-url="{% url 'ajax_update_table' %}"
+      data-update-notes-url="{% url 'ajax_update_notes' %}"
       novalidate>
     {% csrf_token %}
     <table>
@@ -40,6 +42,52 @@
           });
       }else {
               document.getElementById("id_interpolated_pressure").setAttribute('value','----');
+            }
+    }
+
+
+    function updateTable() {
+      var url = $("#resultsPressureForm").attr("data-update-table-url");
+
+      var materialId = $(document.getElementById("id_material")).val();
+
+      if( materialId) {
+          $.ajax({
+            url: url,
+            data: {
+              'material': materialId,
+            },
+            success: function (data) {
+              document.getElementById("id_table").setAttribute('value',data);
+            }
+          });
+      }else {
+              document.getElementById("id_table").setAttribute('value','----');
+            }
+    }
+
+    function updateNotes() {
+      var url = $("#resultsPressureForm").attr("data-update-notes-url");
+
+      var materialId = $(document.getElementById("id_material")).val();
+      var temperatureValue = $(document.getElementById("id_temperature")).val();
+
+      if( materialId && temperatureValue) {
+          $.ajax({
+            url: url,
+            data: {
+              'material': materialId,
+              'temperature_value': temperatureValue,
+            },
+            dataType: 'json',
+            success: function (data) {
+              document.getElementById("id_notes").value = data.str_01;
+              document.getElementById("id_notes").className = data.textarea_class;
+            }
+          });
+      }else {
+              document.getElementById("id_notes").value = "----";
+              document.getElementById("id_notes").className = 'color_white';
             }
     }
 
@@ -94,8 +142,9 @@
             }
           });
       }
-
+      updateTable();
       updatePressureInterpolation();
+      updateNotes();
     });
 
     $("#id_pressure_class").change(function () {
@@ -104,6 +153,7 @@
 
     $("#id_temperature").change(function () {
       updatePressureInterpolation();
+      updateNotes();
     });
 
 
