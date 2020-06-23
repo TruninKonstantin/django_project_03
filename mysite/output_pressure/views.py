@@ -40,8 +40,12 @@ def load_groups(request):
 # TODO there is no update of the fields on first material choose
 def interpolate_pressure(request):
     pressure_class_id = request.GET.get('pressure_class')
-    group_id = request.GET.get('group')
+    material_id = request.GET.get('material')
     input_temperature = request.GET.get('input_temperature')
+
+    field_name = 'group_id'
+    material_obj = Material.objects.get(id=material_id)
+    group_id = get_field_value(field_name, Material, material_obj)
 
     pressures = Pressure.objects.filter(group_id=group_id).filter(pressure_class_id=pressure_class_id).order_by('name')
     pressure_object = pressures.first()
@@ -55,9 +59,9 @@ def interpolate_pressure(request):
     field_temperature_higher_input = pressure_object._meta.get_field(Constants.HIGHEST_TEMPERATURE_FIELD_NAME.value)
 
     for field in all_fields:
-        if get_temperature_from_field_name(field) < float(input_temperature):
+        if get_temperature_from_field_name(field) <= float(input_temperature):
             field_temperature_lower_input = field
-        if get_temperature_from_field_name(field) > float(input_temperature):
+        if get_temperature_from_field_name(field) >= float(input_temperature):
             field_temperature_higher_input = field
             break
 

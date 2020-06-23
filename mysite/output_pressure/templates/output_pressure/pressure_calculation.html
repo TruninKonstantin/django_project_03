@@ -21,22 +21,24 @@
       var url = $("#resultsPressureForm").attr("data-interpolated-pressure-url");
 
       var pressureClassId = $(document.getElementById("id_pressure_class")).val();
-      var groupId = $(document.getElementById("id_group")).val();
+      var materialId = $(document.getElementById("id_material")).val();
       var inputTemperature = $(document.getElementById("id_input_temperature")).val();
 
-      if( pressureClassId && groupId && inputTemperature) {
+      if( pressureClassId && materialId && inputTemperature) {
           $.ajax({
             url: url,
             data: {
               'pressure_class': pressureClassId,
-              'group': groupId,
+              'material': materialId,
               'input_temperature': inputTemperature
             },
             success: function (data) {
               document.getElementById("id_calculated_value").setAttribute('value',data);
             }
           });
-      }
+      }else {
+              document.getElementById("id_calculated_value").setAttribute('value','----');
+            }
     }
 
     $("#id_group").change(function () {
@@ -66,6 +68,7 @@
           $("#id_group").html(data);
         }
       });
+      updatePressureInterpolation();
     });
 
     $("#id_pressure_class").change(function () {
