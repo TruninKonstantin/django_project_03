@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class DropdownListConfig(AppConfig):
+class OutputPressureConfig(AppConfig):
     name = 'output_pressure'

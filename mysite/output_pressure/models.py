@@ -1,8 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-
 class Standard(models.Model):
     name = models.CharField(max_length=30)
 
@@ -27,11 +25,13 @@ class Material(models.Model):
     def __str__(self):
         return self.name
 
+
 class PressureClass(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self):
         return self.name
+
 
 # TODO add pressures for all temperatures
 class Pressure(models.Model):

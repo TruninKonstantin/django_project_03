@@ -3,10 +3,10 @@
 <link rel="stylesheet" type="text/css" href="{% static 'output_pressure/style.css' %}">
 
 <form method="post"
-      id="outputPressureForm"
+      id="resultsPressureForm"
       data-materials-url="{% url 'ajax_load_materials' %}"
       data-groups-url="{% url 'ajax_load_groups' %}"
-      data-temperatures-pressures-url="{% url 'ajax_load_temperatures_pressures' %}"
+      data-interpolated-pressure-url="{% url 'ajax_load_interpolated_pressure' %}"
       novalidate>
     {% csrf_token %}
     <table>
@@ -17,15 +17,14 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
 
-    function updateCalculatedValueWithInterpolation() {
-      var url = $("#outputPressureForm").attr("data-temperatures-pressures-url");
+    function updatePressureInterpolation() {
+      var url = $("#resultsPressureForm").attr("data-interpolated-pressure-url");
 
       var pressureClassId = $(document.getElementById("id_pressure_class")).val();
       var groupId = $(document.getElementById("id_group")).val();
       var inputTemperature = $(document.getElementById("id_input_temperature")).val();
 
       if( pressureClassId && groupId && inputTemperature) {
-
           $.ajax({
             url: url,
             data: {
@@ -41,9 +40,8 @@
     }
 
     $("#id_group").change(function () {
-      var url = $("#outputPressureForm").attr("data-materials-url");
+      var url = $("#resultsPressureForm").attr("data-materials-url");
       var groupId = $(this).val();
-
       $.ajax({
         url: url,
         data: {
@@ -53,15 +51,12 @@
           $("#id_material").html(data);
         }
       });
-
-      updateCalculatedValueWithInterpolation();
-
+      updatePressureInterpolation();
     });
 
     $("#id_material").change(function () {
-      var url = $("#outputPressureForm").attr("data-groups-url");
+      var url = $("#resultsPressureForm").attr("data-groups-url");
       var materialId = $(this).val();
-
       $.ajax({
         url: url,
         data: {
@@ -74,18 +69,11 @@
     });
 
     $("#id_pressure_class").change(function () {
-      updateCalculatedValueWithInterpolation();
-
+      updatePressureInterpolation();
     });
 
     $("#id_input_temperature").change(function () {
-      updateCalculatedValueWithInterpolation();
-
+      updatePressureInterpolation();
     });
-
-
-
-
-
 
 </script>
