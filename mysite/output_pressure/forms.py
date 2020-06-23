@@ -5,11 +5,9 @@ from .models import Results, Material, Standard
 
 class ResultsForm(forms.ModelForm):
     temperature = forms.FloatField()
-    # TODO add bar
-    interpolated_pressure = forms.CharField()
-    # labels = {
-    #     "interpolated_pressure": "interpolated_pressure, bars"
-    # }
+    interpolated_pressure = forms.CharField(
+        label="Interpolated pressure, bar"
+    )
 
     class Meta:
         model = Results
@@ -17,6 +15,9 @@ class ResultsForm(forms.ModelForm):
                   'group',
                   'material',
                   'pressure_class')
+        labels = {
+            "interpolated_pressure": "interpolated_pressure, bars"
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
