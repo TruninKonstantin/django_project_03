@@ -1,6 +1,6 @@
-<!--{% load static %}-->
+{% load static %}
 
-<!--<link rel="stylesheet" type="text/css" href="{% static 'output_pressure/style.css' %}">-->
+<link rel="stylesheet" type="text/css" href="{% static 'output_pressure/style.css' %}">
 
 <form method="post"
       id="resultsPressureForm"
@@ -24,7 +24,7 @@
 
       var pressureClassId = $(document.getElementById("id_pressure_class")).val();
       var materialId = $(document.getElementById("id_material")).val();
-      var inputTemperature = $(document.getElementById("id_input_temperature")).val();
+      var inputTemperature = $(document.getElementById("id_temperature")).val();
 
       if( pressureClassId && materialId && inputTemperature) {
           $.ajax({
@@ -35,11 +35,11 @@
               'input_temperature': inputTemperature
             },
             success: function (data) {
-              document.getElementById("id_calculated_value").setAttribute('value',data);
+              document.getElementById("id_interpolated_pressure").setAttribute('value',data);
             }
           });
       }else {
-              document.getElementById("id_calculated_value").setAttribute('value','----');
+              document.getElementById("id_interpolated_pressure").setAttribute('value','----');
             }
     }
 
@@ -102,7 +102,7 @@
       updatePressureInterpolation();
     });
 
-    $("#id_input_temperature").change(function () {
+    $("#id_temperature").change(function () {
       updatePressureInterpolation();
     });
 

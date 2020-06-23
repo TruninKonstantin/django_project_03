@@ -4,9 +4,12 @@ from .models import Results, Material, Standard
 
 
 class ResultsForm(forms.ModelForm):
-    input_temperature = forms.FloatField()
+    temperature = forms.FloatField()
     # TODO add bar
-    calculated_value = forms.CharField()
+    interpolated_pressure = forms.CharField()
+    # labels = {
+    #     "interpolated_pressure": "interpolated_pressure, bars"
+    # }
 
     class Meta:
         model = Results
