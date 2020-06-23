@@ -17,7 +17,7 @@ class StandardAdmin(ImportExportModelAdmin):
 
 class MaterialAdmin(ImportExportModelAdmin):
     list_display = (
-        'name', 'standard', 'group')
+        'name', 'standard', 'group', 't_min', 't_max')
 
 
 class PressureClassAdmin(ImportExportModelAdmin):
@@ -26,8 +26,10 @@ class PressureClassAdmin(ImportExportModelAdmin):
 
 class PressureAdmin(ImportExportModelAdmin):
     list_display = (
-        'name', 'group', 'material_class', 'pressure_m29', 'pressure_38', 'pressure_50', 'pressure_100',
-        'pressure_150')
+        'name', 'group', 'pressure_class', 'pressure_m29', 'pressure_38', 'pressure_50', 'pressure_100',
+        'pressure_150', 'pressure_200', 'pressure_250', 'pressure_300', 'pressure_325', 'pressure_350',
+        'pressure_375', 'pressure_400', 'pressure_425',
+    )
 
 
 admin.site.register(Standard, StandardAdmin)

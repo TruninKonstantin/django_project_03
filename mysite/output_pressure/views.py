@@ -41,16 +41,27 @@ def load_groups(request):
 
 
 def load_temperatures_pressures(request):
-    material_class_id = request.GET.get('pressure_class')
+    pressure_class_id = request.GET.get('pressure_class')
     group_id = request.GET.get('group')
     input_temperature = request.GET.get('input_temperature')
 
-    pressures = Pressure.objects.filter(group_id=group_id).filter(material_class_id=material_class_id).order_by('name')
+    pressures = Pressure.objects.filter(group_id=group_id).filter(pressure_class_id=pressure_class_id).order_by('name')
 
     pressure_object = pressures.first()
-    all_fields = pressure_object._meta.get_fields()
+    temperature_field_names = ['pressure_m29', 'pressure_38', 'pressure_50', 'pressure_100',
+        'pressure_150', 'pressure_200', 'pressure_250', 'pressure_300', 'pressure_325', 'pressure_350',
+        'pressure_375', 'pressure_400', 'pressure_425']
+
+    # all_fields = pressure_object._meta.get_fields()
+    all_fields = []
+    for field_name in temperature_field_names:
+        all_fields.append(pressure_object._meta.get_field(field_name))
+
+
+
+
     field_temperature_lower_input = pressure_object._meta.get_field("pressure_m29")
-    field_temperature_higher_input = pressure_object._meta.get_field("pressure_150")
+    field_temperature_higher_input = pressure_object._meta.get_field("pressure_425")
 
     for field in all_fields:
         if "pressure_" in field.name:
