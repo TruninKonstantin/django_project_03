@@ -1,19 +1,40 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
-# Register your models here.
+from .constants.constants import Constants
+from .models import Group, Material, PressureClass, Pressure, Standard
 
-from django.contrib import admin
 
-from .models import Group, Material, OutputPressure, MaterialClass, Pressure, Standard
+class GroupAdmin(ImportExportModelAdmin):
+    pass
 
-class PressureAdmin(admin.ModelAdmin):
-    list_display = ('name', 'group', 'material_class', 'temperature_50', 'temperature_100', 'temperature_150')
 
-admin.site.register(Standard)
-admin.site.register(Group)
-admin.site.register(Material)
+class StandardAdmin(ImportExportModelAdmin):
+    pass
+
+
+class MaterialAdmin(ImportExportModelAdmin):
+    list_display = (
+        'name', 'standard', 'group', 't_min', 't_max')
+
+
+class PressureClassAdmin(ImportExportModelAdmin):
+    pass
+
+
+class PressureAdmin(ImportExportModelAdmin):
+    list_display = (
+        'name', 'group', 'pressure_class',
+    )
+
+    list_from_tuple = list(list_display)
+    for elem in Constants.TEMPERATURE_FIELD_NAMES.value:
+        list_from_tuple.append(elem)
+    list_display = tuple(list_from_tuple)
+
+
+admin.site.register(Standard, StandardAdmin)
+admin.site.register(Group, GroupAdmin)
+admin.site.register(Material, MaterialAdmin)
 admin.site.register(Pressure, PressureAdmin)
-admin.site.register(MaterialClass)
-admin.site.register(OutputPressure)
-
-
+admin.site.register(PressureClass, PressureClassAdmin)

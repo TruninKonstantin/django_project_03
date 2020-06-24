@@ -1,0 +1,12 @@
+#id_group, label[for="id_group"] {
+  position: absolute;
+  display: none
+}
+
+.color_white  {
+background-color: white
+}
+
+.color_red  {
+background-color: red
+}

@@ -1,8 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-
 class Standard(models.Model):
     name = models.CharField(max_length=30)
 
@@ -18,35 +16,48 @@ class Group(models.Model):
 
 
 class Material(models.Model):
-    standard = models.ForeignKey(Standard, on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=30)
+    standard = models.ForeignKey(Standard, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.name
-
-# TODO rename to PressureClass
-class MaterialClass(models.Model):
-    name = models.CharField(max_length=30)
+    t_min = models.FloatField()
+    t_max = models.FloatField()
 
     def __str__(self):
         return self.name
 
 
+class PressureClass(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+
+# TODO add pressures for all temperatures
 class Pressure(models.Model):
     name = models.CharField(max_length=30)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    material_class = models.ForeignKey(MaterialClass, on_delete=models.CASCADE)
-    temperature_50 = models.FloatField()
-    temperature_100 = models.FloatField()
-    temperature_150 = models.FloatField()
+    pressure_class = models.ForeignKey(PressureClass, on_delete=models.CASCADE)
+    pressure_m29 = models.FloatField()
+    pressure_38 = models.FloatField()
+    pressure_50 = models.FloatField()
+    pressure_100 = models.FloatField()
+    pressure_150 = models.FloatField()
+    pressure_200 = models.FloatField()
+    pressure_250 = models.FloatField()
+    pressure_300 = models.FloatField()
+    pressure_325 = models.FloatField()
+    pressure_350 = models.FloatField()
+    pressure_375 = models.FloatField()
+    pressure_400 = models.FloatField()
+    pressure_425 = models.FloatField()
 
     def __str__(self):
         return str(self.name)
 
 
-class OutputPressure(models.Model):
-    standard = models.ForeignKey(Standard, on_delete=models.SET_NULL, null=True)
-    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True)
-    material = models.ForeignKey(Material, on_delete=models.SET_NULL, null=True)
-    material_class = models.ForeignKey(MaterialClass, on_delete=models.SET_NULL, null=True)
+class Results(models.Model):
+    standard = models.ForeignKey(Standard, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    pressure_class = models.ForeignKey(PressureClass, on_delete=models.CASCADE)

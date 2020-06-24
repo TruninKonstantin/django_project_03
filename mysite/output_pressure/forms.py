@@ -1,34 +1,33 @@
 from django import forms
 
-from .models import OutputPressure, Material
+from .models import Results, Material, Standard
 
-# TODO rename to ResultsForm
-class OutputPressureForm(forms.ModelForm):
-    input_temperature = forms.FloatField()
-    minimum_temperature = forms.FloatField()
-    maximum_temperature = forms.FloatField()
-    minimum_pressure = forms.FloatField()
-    maximum_pressure = forms.FloatField()
-    calculated_value = forms.CharField()
-    # calculated_value = forms.CharField(label="calculated_value", widget=forms.Select())
-    # calculated_value = forms.CharField(widget=forms.TextInput(attrs={
-    #             'class': 'name-of-your-class',
-    #             # 'other-attribute': 'other-value',
-    #             'value':'some_value',
-    #         }))
+
+class ResultsForm(forms.ModelForm):
+    temperature = forms.FloatField()
+    interpolated_pressure = forms.CharField(
+        label="Interpolated pressure, bar"
+    )
+    table = forms.CharField()
+    notes = forms.CharField(required=False,
+                            widget=forms.Textarea(
+                                attrs={
+                                    # 'style': 'background-color: #FF0000;',
+                                    'class': 'color_white',
+                                }
+                            ))
 
     class Meta:
-        model = OutputPressure
-        fields = ('standard', 'group', 'material', 'material_class')
+        model = Results
+        fields = ('standard',
+                  'group',
+                  'material',
+                  'pressure_class')
+        labels = {
+            "interpolated_pressure": "interpolated_pressure, bars"
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # if 'group' in self.data:
-        #     try:
-        #         group_id = int(self.data.get('group'))
-        #         self.fields['material'].queryset = Material.objects.filter(group_id=group_id).order_by('name')
-        #     except (ValueError, TypeError):
-        #         pass  # invalid input from the client; ignore and fallback to empty material queryset
-        # elif self.instance.pk:
-        #     self.fields['material'].queryset = self.instance.group.material_set.order_by('name')
+        self.fields['material'].queryset = Material.objects.order_by('name')
+        self.fields['standard'].queryset = Standard.objects.order_by('name')

@@ -1,31 +1,35 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from .forms import OutputPressureForm
-from .models import OutputPressure, Material, Group, Pressure
+from .constants.constants import Constants
+from .forms import ResultsForm
+from .models import Results, Material, Group, Pressure, Standard
 
 
-# Create your views here.
-
-# TODO rename
-class PersonCreateView(CreateView):
-    model = OutputPressure
-    form_class = OutputPressureForm
+class ResultView(CreateView):
+    model = Results
+    form_class = ResultsForm
     template_name = 'output_pressure/pressure_calculation.html'
     success_url = reverse_lazy('output_pressure_calculation')
 
 
-def load_materials(request):
-    group_id = request.GET.get('group')
-    if group_id == '':
-        materials = Material.objects.order_by('name')
-    else:
-        materials = Material.objects.filter(group_id=group_id).order_by('name')
+def reload_materials(request):
+    materials = Material.objects.order_by('name')
     return render(request, 'output_pressure/material_dropdown_list_options.html', {'materials': materials})
 
 
-def load_groups(request):
+def load_materials_on_standard_change(request):
+    standard_id = request.GET.get('standard')
+    if standard_id == '':
+        materials = Material.objects.order_by('name')
+    else:
+        materials = Material.objects.filter(standard_id=standard_id).order_by('name')
+    return render(request, 'output_pressure/material_dropdown_list_options.html', {'materials': materials})
+
+
+def load_groups_on_material_changed(request):
     material_id = request.GET.get('material')
     if material_id == '':
         groups = Group.objects.order_by('name')
@@ -33,50 +37,104 @@ def load_groups(request):
     else:
 
         field_name = 'group_id'
-        material = Material.objects.get(id=material_id)
-        field_object = Material._meta.get_field(field_name)
-        group_id = getattr(material, field_object.attname)
-        groups = Group.objects.filter(id=group_id).order_by('name')
+        material_obj = Material.objects.get(id=material_id)
+        group_id = get_field_value(field_name, Material, material_obj)
 
+        groups = Group.objects.filter(id=group_id).order_by('name')
         return render(request, 'output_pressure/group_dropdown_one.html', {'groups': groups})
 
 
-def load_temperatures_pressures(request):
-    material_class_id = request.GET.get('material_class')
-    group_id = request.GET.get('group')
+def load_standards_on_material_changed(request):
+    material_id = request.GET.get('material')
+    if material_id == '':
+        standards = Standard.objects.order_by('name')
+        return render(request, 'output_pressure/standard_dropdown_list_options.html', {'standards': standards})
+    else:
+
+        field_name = 'standard_id'
+        material_obj = Material.objects.get(id=material_id)
+        standard_id = get_field_value(field_name, Material, material_obj)
+
+        standards = Standard.objects.filter(id=standard_id).order_by('name')
+        return render(request, 'output_pressure/standard_dropdown_one.html', {'standards': standards})
+
+
+def interpolate_pressure(request):
+    pressure_class_id = request.GET.get('pressure_class')
+    material_id = request.GET.get('material')
     input_temperature = request.GET.get('input_temperature')
 
-    pressures = Pressure.objects.filter(group_id=group_id).filter(material_class_id=material_class_id).order_by('name')
+    field_name = 'group_id'
+    material_obj = Material.objects.get(id=material_id)
+    group_id = get_field_value(field_name, Material, material_obj)
 
-    some_values = []
-    some_values.append([p.temperature_50 for p in pressures])
-    some_values.append([p.temperature_100 for p in pressures])
-    some_values.append([p.temperature_150 for p in pressures])
+    pressures = Pressure.objects.filter(group_id=group_id).filter(pressure_class_id=pressure_class_id).order_by('name')
+    pressure_object = pressures.first()
+    temperature_field_names = Constants.TEMPERATURE_FIELD_NAMES.value
 
-    p = pressures.first()
-    all_fields = p._meta.get_fields()
-    field_temperature_lower_input = p._meta.get_field("temperature_50")
-    field_temperature_higher_input = p._meta.get_field("temperature_150")
+    all_fields = []
+    for field_name in temperature_field_names:
+        all_fields.append(pressure_object._meta.get_field(field_name))
+
+    field_temperature_lower_input = pressure_object._meta.get_field(Constants.LOWEST_TEMPERATURE_FIELD_NAME.value)
+    field_temperature_higher_input = pressure_object._meta.get_field(Constants.HIGHEST_TEMPERATURE_FIELD_NAME.value)
 
     for field in all_fields:
-        if "temperature_" in field.name:
-            if float(field.name.split("temperature_")[1]) < float(input_temperature):
-                field_temperature_lower_input = field
-            if float(field.name.split("temperature_")[1]) > float(input_temperature):
-                field_temperature_higher_input = field
-                break
+        if get_temperature_from_field_name(field) <= float(input_temperature):
+            field_temperature_lower_input = field
+        if get_temperature_from_field_name(field) >= float(input_temperature):
+            field_temperature_higher_input = field
+            break
 
-    print(field_temperature_lower_input.name)
-    print(get_field_value(field_temperature_lower_input.name, Pressure, p))
-    print(field_temperature_higher_input.name)
-    print(get_field_value(field_temperature_higher_input.name, Pressure, p))
-    print(interpolation(input_temperature, field_temperature_lower_input, field_temperature_higher_input, Pressure, p))
+    interpolated_pressure = interpolation(input_temperature, field_temperature_lower_input,
+                                          field_temperature_higher_input,
+                                          Pressure, pressure_object)
 
-    some_values = interpolation(input_temperature, field_temperature_lower_input, field_temperature_higher_input,
-                                Pressure, p)
+    data = {'interpolated_pressure': interpolated_pressure}
+    return JsonResponse(data)
 
-    return render(request, 'output_pressure/temperatures_pressures_dropdown_list_options.html',
-                  {'pressures': some_values})
+
+def update_table(request):
+    material_id = request.GET.get('material')
+
+    field_name = 'group_id'
+    material_obj = Material.objects.get(id=material_id)
+    group_id = get_field_value(field_name, Material, material_obj)
+
+    group_obj = Group.objects.get(id=group_id)
+    group = get_field_value("name", Group, group_obj)
+    str_table = "Table 2-" + str(group)
+    data = {'str_table': str_table}
+
+    return JsonResponse(data)
+
+
+def update_notes(request):
+    material_id = request.GET.get('material')
+    temperature = float(request.GET.get('temperature_value'))
+
+    material_obj = Material.objects.get(id=material_id)
+    material_minimum_temperature = get_field_value("t_min", Material, material_obj)
+    material_maximum_temperature = get_field_value("t_max", Material, material_obj)
+
+    if material_minimum_temperature <= temperature <= material_maximum_temperature:
+        str_note = "\nYou are inside material temperature range"
+        textarea_class = "color_white"
+
+    else:
+        str_note = "\nYou are outside material temperature range"
+        textarea_class = "color_red"
+
+    str_material_temperatures = ("Material minimum temperature ="
+                                 + str(material_minimum_temperature)
+                                 + "\nMaterial maximun temperature ="
+                                 + str(material_maximum_temperature))
+
+    str_temperatures = (str_material_temperatures + str_note)
+
+    data = {'str_temperatures': str_temperatures, 'textarea_class': textarea_class}
+
+    return JsonResponse(data)
 
 
 def interpolation(input_temperature, field_temperature_lower_input, field_temperature_higher_input, MyModel,
@@ -84,18 +142,27 @@ def interpolation(input_temperature, field_temperature_lower_input, field_temper
     if field_temperature_lower_input.name == field_temperature_higher_input.name:
         output_value = float(get_field_value(field_temperature_lower_input.name, MyModel, my_model_obj))
     else:
-        x_one = float(field_temperature_lower_input.name.split("temperature_")[1])
+        x_one = float(field_temperature_lower_input.name.split(Constants.STR_PART_PRESSURE_FIELD.value)[
+                          Constants.NUMBER_POSITION_AFTER_SPLIT.value])
         y_one = float(get_field_value(field_temperature_lower_input.name, MyModel, my_model_obj))
 
-        x_two = float(field_temperature_higher_input.name.split("temperature_")[1])
+        x_two = float(field_temperature_higher_input.name.split(Constants.STR_PART_PRESSURE_FIELD.value)[
+                          Constants.NUMBER_POSITION_AFTER_SPLIT.value])
         y_two = float(get_field_value(field_temperature_higher_input.name, MyModel, my_model_obj))
 
         input_temperature = float(input_temperature)
 
         output_value = (y_two - y_one) / (x_two - x_one) * (input_temperature - x_one) + y_one
-    return round(output_value, 3)
+    return round(output_value, Constants.NUMBER_OF_DECIMALS.value)
 
 
 def get_field_value(field_name, MyModel, my_model_obj):
     field_object = MyModel._meta.get_field(field_name)
     return field_object.value_from_object(my_model_obj)
+
+
+def get_temperature_from_field_name(field):
+    temperature = field.name.split(Constants.STR_PART_PRESSURE_FIELD.value)[Constants.NUMBER_POSITION_AFTER_SPLIT.value]
+    if Constants.STR_FOR_MINUS.value in temperature:
+        temperature = temperature.split(Constants.STR_FOR_MINUS.value)[Constants.NUMBER_POSITION_AFTER_SPLIT.value]
+    return float(temperature)

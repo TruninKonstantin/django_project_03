@@ -1,8 +1,16 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'output_pressure/style.css' %}">
+
 <form method="post"
-      id="outputPressureForm"
+      id="resultsPressureForm"
       data-materials-url="{% url 'ajax_load_materials' %}"
+      data-re-load-materials-url="{% url 'ajax_re_load_materials' %}"
       data-groups-url="{% url 'ajax_load_groups' %}"
-      data-temperatures-pressures-url="{% url 'ajax_load_temperatures_pressures' %}"
+      data-standards-url="{% url 'ajax_load_standards' %}"
+      data-interpolated-pressure-url="{% url 'ajax_load_interpolated_pressure' %}"
+      data-update-table-url="{% url 'ajax_update_table' %}"
+      data-update-notes-url="{% url 'ajax_update_notes' %}"
       novalidate>
     {% csrf_token %}
     <table>
@@ -13,51 +21,96 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
 
-    function updateCalculatedValueWithInterpolation() {
-      var url = $("#outputPressureForm").attr("data-temperatures-pressures-url");
+    function updatePressureInterpolation() {
+      var url = $("#resultsPressureForm").attr("data-interpolated-pressure-url");
 
-      var materialClassId = $(document.getElementById("id_material_class")).val();
-      var groupId = $(document.getElementById("id_group")).val();
-      var inputTemperature = $(document.getElementById("id_input_temperature")).val();
+      var pressureClassId = $(document.getElementById("id_pressure_class")).val();
+      var materialId = $(document.getElementById("id_material")).val();
+      var inputTemperature = $(document.getElementById("id_temperature")).val();
 
-      document.getElementById("id_minimum_temperature").setAttribute('value',materialClassId);
-      document.getElementById("id_maximum_temperature").setAttribute('value',groupId);
-
-      $.ajax({
-        url: url,
-        data: {
-          'material_class': materialClassId,
-          'group': groupId,
-          'input_temperature': inputTemperature
-        },
-        success: function (data) {
-          document.getElementById("id_calculated_value").setAttribute('value',data);
-        }
-      });
+      if( pressureClassId && materialId && inputTemperature) {
+          $.ajax({
+            url: url,
+            data: {
+              'pressure_class': pressureClassId,
+              'material': materialId,
+              'input_temperature': inputTemperature
+            },
+            dataType: 'json',
+            success: function (data) {
+              document.getElementById("id_interpolated_pressure").setAttribute('value',data.interpolated_pressure);
+            }
+          });
+      }else {
+              document.getElementById("id_interpolated_pressure").setAttribute('value','----');
+            }
     }
 
-    $("#id_group").change(function () {
-      var url = $("#outputPressureForm").attr("data-materials-url");
-      var groupId = $(this).val();
 
+    function updateTable() {
+      var url = $("#resultsPressureForm").attr("data-update-table-url");
+
+      var materialId = $(document.getElementById("id_material")).val();
+
+      if( materialId) {
+          $.ajax({
+            url: url,
+            data: {
+              'material': materialId,
+            },
+            dataType: 'json',
+            success: function (data) {
+              document.getElementById("id_table").setAttribute('value',data.str_table);
+            }
+          });
+      }else {
+              document.getElementById("id_table").setAttribute('value','----');
+            }
+    }
+
+    function updateNotes() {
+      var url = $("#resultsPressureForm").attr("data-update-notes-url");
+
+      var materialId = $(document.getElementById("id_material")).val();
+      var temperatureValue = $(document.getElementById("id_temperature")).val();
+
+      if( materialId && temperatureValue) {
+          $.ajax({
+            url: url,
+            data: {
+              'material': materialId,
+              'temperature_value': temperatureValue,
+            },
+            dataType: 'json',
+            success: function (data) {
+              document.getElementById("id_notes").value = data.str_temperatures;
+              document.getElementById("id_notes").className = data.textarea_class;
+            }
+          });
+      }else {
+              document.getElementById("id_notes").value = "----";
+              document.getElementById("id_notes").className = 'color_white';
+            }
+    }
+
+    $("#id_standard").change(function () {
+      var url = $("#resultsPressureForm").attr("data-materials-url");
+      var standardId = $(this).val();
       $.ajax({
         url: url,
         data: {
-          'group': groupId
+          'standard': standardId
         },
         success: function (data) {
           $("#id_material").html(data);
         }
       });
-
-      updateCalculatedValueWithInterpolation();
-
+      updatePressureInterpolation();
     });
 
     $("#id_material").change(function () {
-      var url = $("#outputPressureForm").attr("data-groups-url");
+      var url = $("#resultsPressureForm").attr("data-groups-url");
       var materialId = $(this).val();
-
       $.ajax({
         url: url,
         data: {
@@ -67,21 +120,43 @@
           $("#id_group").html(data);
         }
       });
+
+
+      var url = $("#resultsPressureForm").attr("data-standards-url");
+      var materialId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {
+          'material': materialId
+        },
+        success: function (data) {
+          $("#id_standard").html(data);
+        }
+      });
+
+      var materialId = $(this).val();
+      if( materialId == '') {
+          var url = $("#resultsPressureForm").attr("data-re-load-materials-url");
+          $.ajax({
+            url: url,
+            success: function (data) {
+                $("#id_material").html(data);
+            }
+          });
+      }
+      updateTable();
+      updatePressureInterpolation();
+      updateNotes();
     });
 
-    $("#id_material_class").change(function () {
-      updateCalculatedValueWithInterpolation();
-
+    $("#id_pressure_class").change(function () {
+      updatePressureInterpolation();
     });
 
-    $("#id_input_temperature").change(function () {
-      updateCalculatedValueWithInterpolation();
-
+    $("#id_temperature").change(function () {
+      updatePressureInterpolation();
+      updateNotes();
     });
-
-
-
-
 
 
 </script>
