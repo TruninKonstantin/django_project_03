@@ -12,7 +12,6 @@ class ResultsForm(forms.ModelForm):
     notes = forms.CharField(required=False,
                             widget=forms.Textarea(
                                 attrs={
-                                    # 'style': 'background-color: #FF0000;',
                                     'class': 'color_white',
                                     'rows':4,
                                 }
