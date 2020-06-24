@@ -1,6 +1,7 @@
-{% load static %}
+{% extends 'base.html' %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'output_pressure/style.css' %}">
+
+{% block content %}
 
 <form method="post"
       id="resultsPressureForm"
@@ -13,12 +14,16 @@
       data-update-notes-url="{% url 'ajax_update_notes' %}"
       novalidate>
     {% csrf_token %}
-    <table>
+    <div class="table-title">
+        <h3>Pressure Table</h3>
+    </div>
+    <table class="table-fill">
         {{ form.as_table }}
     </table>
 </form>
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 
     function updatePressureInterpolation() {
@@ -159,4 +164,7 @@
     });
 
 
+
+
 </script>
+{% endblock %}

@@ -14,18 +14,19 @@ class ResultsForm(forms.ModelForm):
                                 attrs={
                                     # 'style': 'background-color: #FF0000;',
                                     'class': 'color_white',
+                                    'rows':4,
                                 }
                             ))
 
     class Meta:
         model = Results
         fields = ('standard',
-                  'group',
+                  # 'group',
                   'material',
                   'pressure_class')
-        labels = {
-            "interpolated_pressure": "interpolated_pressure, bars"
-        }
+        # labels = {
+        #     "interpolated_pressure": "interpolated_pressure, bars"
+        # }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
