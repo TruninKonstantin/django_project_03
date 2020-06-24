@@ -36,8 +36,9 @@
               'material': materialId,
               'input_temperature': inputTemperature
             },
+            dataType: 'json',
             success: function (data) {
-              document.getElementById("id_interpolated_pressure").setAttribute('value',data);
+              document.getElementById("id_interpolated_pressure").setAttribute('value',data.interpolated_pressure);
             }
           });
       }else {
@@ -57,8 +58,9 @@
             data: {
               'material': materialId,
             },
+            dataType: 'json',
             success: function (data) {
-              document.getElementById("id_table").setAttribute('value',data);
+              document.getElementById("id_table").setAttribute('value',data.str_table);
             }
           });
       }else {
@@ -81,7 +83,7 @@
             },
             dataType: 'json',
             success: function (data) {
-              document.getElementById("id_notes").value = data.str_01;
+              document.getElementById("id_notes").value = data.str_temperatures;
               document.getElementById("id_notes").className = data.textarea_class;
             }
           });

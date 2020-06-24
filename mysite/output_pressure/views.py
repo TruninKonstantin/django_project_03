@@ -90,8 +90,8 @@ def interpolate_pressure(request):
                                           field_temperature_higher_input,
                                           Pressure, pressure_object)
 
-    return render(request, 'output_pressure/for_data_transfer.html',
-                  {'data': interpolated_pressure})
+    data = {'interpolated_pressure': interpolated_pressure}
+    return JsonResponse(data)
 
 
 def update_table(request):
@@ -103,10 +103,10 @@ def update_table(request):
 
     group_obj = Group.objects.get(id=group_id)
     group = get_field_value("name", Group, group_obj)
-    data = "Table 2-" + str(group)
+    str_table = "Table 2-" + str(group)
+    data = {'str_table': str_table}
 
-    return render(request, 'output_pressure/for_data_transfer.html',
-                  {'data': data})
+    return JsonResponse(data)
 
 
 def update_notes(request):
@@ -117,7 +117,7 @@ def update_notes(request):
     material_minimum_temperature = get_field_value("t_min", Material, material_obj)
     material_maximum_temperature = get_field_value("t_max", Material, material_obj)
 
-    if material_minimum_temperature < temperature < material_maximum_temperature:
+    if material_minimum_temperature <= temperature <= material_maximum_temperature:
         str_note = "\nYou are inside material temperature range"
         textarea_class = "color_white"
 
@@ -130,10 +130,9 @@ def update_notes(request):
                                  + "\nMaterial maximun temperature ="
                                  + str(material_maximum_temperature))
 
-    str_01 = (str_material_temperatures + str_note)
+    str_temperatures = (str_material_temperatures + str_note)
 
-    data = {'str_01':str_01,'textarea_class':textarea_class}
-
+    data = {'str_temperatures': str_temperatures, 'textarea_class': textarea_class}
 
     return JsonResponse(data)
 
