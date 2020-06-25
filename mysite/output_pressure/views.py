@@ -1,13 +1,35 @@
+# Links to files:
+#
+# * [[admin.py]]
+# * [[apps.py]]
+# * [[forms.py]]
+# * [[models.py]]
+# * [[tests.py]]
+# * [[urls.py]]
+# * [[views.py]]
+# * [[app.js]]
+# * [[constants.py]]
+
+# All the views for our Pressure calculation application
+# Currently we support the only one views:
+#
+# 1. **Home** - The main view for Pressure calculation (jump to section in [[views.py#home]] )
+
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+# defined in [[constants.py]]
 from .constants.constants import Constants
+# defined in [[forms.py]]
 from .forms import ResultsForm
+# defined in [[models.py]]
 from .models import Results, Material, Group, Pressure, Standard
 
 
+# === home ===
 class ResultView(CreateView):
     model = Results
     form_class = ResultsForm
@@ -15,11 +37,17 @@ class ResultView(CreateView):
     success_url = reverse_lazy('output_pressure_calculation')
 
 
+# *  Returns list of all Materials from DB.
+# *  Ajax request.
+# *  Html response.
 def reload_materials(request):
     materials = Material.objects.order_by('name')
     return render(request, 'output_pressure/material_dropdown_list_options.html', {'materials': materials})
 
 
+# *  Updates the list of Materials on Standard change.
+# *  Ajax request.
+# *  Html response.
 def load_materials_on_standard_change(request):
     standard_id = request.GET.get('standard')
     if standard_id == '':
@@ -29,6 +57,9 @@ def load_materials_on_standard_change(request):
     return render(request, 'output_pressure/material_dropdown_list_options.html', {'materials': materials})
 
 
+# *  Updates the list of Groups on Standard change.
+# *  Ajax request.
+# *  Html response.
 def load_groups_on_material_changed(request):
     material_id = request.GET.get('material')
     if material_id == '':
@@ -44,6 +75,9 @@ def load_groups_on_material_changed(request):
         return render(request, 'output_pressure/group_dropdown_one.html', {'groups': groups})
 
 
+# *  Updates the list of Standards on Material change.
+# *  Ajax request.
+# *  Html response.
 def load_standards_on_material_changed(request):
     material_id = request.GET.get('material')
     if material_id == '':
@@ -59,6 +93,9 @@ def load_standards_on_material_changed(request):
         return render(request, 'output_pressure/standard_dropdown_one.html', {'standards': standards})
 
 
+# * Returns interpolated value of pressure to home view.
+# * Ajax request.
+# * Json response.
 def interpolate_pressure(request):
     pressure_class_id = request.GET.get('pressure_class')
     material_id = request.GET.get('material')
@@ -94,6 +131,9 @@ def interpolate_pressure(request):
     return JsonResponse(data)
 
 
+# * Updates the Table field.
+# * Ajax request.
+# * Json response.
 def update_table(request):
     material_id = request.GET.get('material')
 
@@ -109,6 +149,9 @@ def update_table(request):
     return JsonResponse(data)
 
 
+# * Updates the Notes field.
+# * Ajax request.
+# * Json response.
 def update_notes(request):
     material_id = request.GET.get('material')
     temperature = float(request.GET.get('temperature_value'))
@@ -137,6 +180,13 @@ def update_notes(request):
     return JsonResponse(data)
 
 
+# * Returns interpolated pressure.
+# * inputs:     input_temperature  -- temperature from view,
+#               field_temperature_lower_input  -- field with the temperature lower than input_temperature,
+#               field_temperature_higher_input -- field with the temperature higher than input_temperature,
+#               MyModel -- Model of the field,
+#               my_model_obj -- Object of the field,
+# * output:     interpolated_pressure
 def interpolation(input_temperature, field_temperature_lower_input, field_temperature_higher_input, MyModel,
                   my_model_obj):
     if field_temperature_lower_input.name == field_temperature_higher_input.name:
@@ -156,11 +206,19 @@ def interpolation(input_temperature, field_temperature_lower_input, field_temper
     return round(output_value, Constants.NUMBER_OF_DECIMALS.value)
 
 
+# * Returns field value.
+# * inputs:   field_name -- field name,
+#           MyModel -- Model of the field,
+#           my_model_obj -- Object of the field,
+# * output:   field_value
 def get_field_value(field_name, MyModel, my_model_obj):
     field_object = MyModel._meta.get_field(field_name)
     return field_object.value_from_object(my_model_obj)
 
 
+# * Returns temperature from field.
+# * inputs:   field -- field,
+# * output:   temperature
 def get_temperature_from_field_name(field):
     temperature = field.name.split(Constants.STR_PART_PRESSURE_FIELD.value)[Constants.NUMBER_POSITION_AFTER_SPLIT.value]
     if Constants.STR_FOR_MINUS.value in temperature:

@@ -1,3 +1,16 @@
+// Links to files:
+//
+// * [[admin.py]]
+// * [[apps.py]]
+// * [[forms.py]]
+// * [[models.py]]
+// * [[tests.py]]
+// * [[urls.py]]
+// * [[views.py]]
+// * [[app.js]]
+// * [[constants.py]]
+
+// Updates interpolation field with Ajax request and Json response
 function updatePressureInterpolation() {
     var url = $("#resultsPressureForm").attr("data-interpolated-pressure-url");
 

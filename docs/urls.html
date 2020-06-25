@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>urls.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>urls.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Links to files:</p>
+<ul>
+<li><a href="admin.html">admin.py</a></li>
+<li><a href="apps.html">apps.py</a></li>
+<li><a href="forms.html">forms.py</a></li>
+<li><a href="models.html">models.py</a></li>
+<li><a href="tests.html">tests.py</a></li>
+<li><a href="urls.html">urls.py</a></li>
+<li><a href="views.html">views.py</a></li>
+<li><a href="app.html">app.js</a></li>
+<li><a href="constants.html">constants.py</a></li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">path</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">views</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Link for Home page</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">path</span><span class="p">(</span><span class="s">&#39;pressure_calculation/&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">ResultView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;output_pressure_calculation&#39;</span><span class="p">),</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Links for Ajax requests</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">path</span><span class="p">(</span><span class="s">&#39;ajax/load-materials/&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">load_materials_on_standard_change</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;ajax_load_materials&#39;</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s">&#39;ajax/load-groups/&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">load_groups_on_material_changed</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;ajax_load_groups&#39;</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s">&#39;ajax/load-standards/&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">load_standards_on_material_changed</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;ajax_load_standards&#39;</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s">&#39;ajax/re-load-materials/&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">reload_materials</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;ajax_re_load_materials&#39;</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s">&#39;ajax/load-interpolated-pressure/&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">interpolate_pressure</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;ajax_load_interpolated_pressure&#39;</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s">&#39;ajax/load-update-table/&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">update_table</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;ajax_update_table&#39;</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s">&#39;ajax/load-update-notes/&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">update_notes</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;ajax_update_notes&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
