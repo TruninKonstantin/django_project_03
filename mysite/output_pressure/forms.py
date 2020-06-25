@@ -20,12 +20,8 @@ class ResultsForm(forms.ModelForm):
     class Meta:
         model = Results
         fields = ('standard',
-                  # 'group',
                   'material',
                   'pressure_class')
-        # labels = {
-        #     "interpolated_pressure": "interpolated_pressure, bars"
-        # }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
