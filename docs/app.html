@@ -40,7 +40,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <p>Updates interpolation field with Ajax request and Json response</p>
+      <p>Updates InterpolationPressure field with Ajax request and Json response based on PressureClass, MaterialId, InputTemperatureValue</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kd">function</span> <span class="nx">updatePressureInterpolation</span><span class="p">()</span> <span class="p">{</span>
@@ -66,10 +66,19 @@
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
         <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;id_interpolated_pressure&quot;</span><span class="p">).</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;----&#39;</span><span class="p">);</span>
     <span class="p">}</span>
-<span class="p">}</span>
-
-
-<span class="kd">function</span> <span class="nx">updateTable</span><span class="p">()</span> <span class="p">{</span>
+<span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Updates Table field with Ajax request and Json response based on GroupId found with from MaterialId</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kd">function</span> <span class="nx">updateTable</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#resultsPressureForm&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-update-table-url&quot;</span><span class="p">);</span>
 
     <span class="kd">var</span> <span class="nx">materialId</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;id_material&quot;</span><span class="p">)).</span><span class="nx">val</span><span class="p">();</span>
@@ -88,9 +97,19 @@
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
         <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;id_table&quot;</span><span class="p">).</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;----&#39;</span><span class="p">);</span>
     <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">updateNotes</span><span class="p">()</span> <span class="p">{</span>
+<span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Updates Notes field with Ajax request and Json response based on MaterialId and InputTemperatureValue</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kd">function</span> <span class="nx">updateNotes</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#resultsPressureForm&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-update-notes-url&quot;</span><span class="p">);</span>
 
     <span class="kd">var</span> <span class="nx">materialId</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;id_material&quot;</span><span class="p">)).</span><span class="nx">val</span><span class="p">();</span>
@@ -113,39 +132,41 @@
         <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;id_notes&quot;</span><span class="p">).</span><span class="nx">value</span> <span class="o">=</span> <span class="s2">&quot;----&quot;</span><span class="p">;</span>
         <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;id_notes&quot;</span><span class="p">).</span><span class="nx">className</span> <span class="o">=</span> <span class="s1">&#39;color_white&#39;</span><span class="p">;</span>
     <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_standard&quot;</span><span class="p">).</span><span class="nx">change</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#resultsPressureForm&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-materials-url&quot;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">standardId</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
+<span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Re-Load all Materials with Ajax request and Html response</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kd">function</span> <span class="nx">reLoadMaterial</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#resultsPressureForm&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-re-load-materials-url&quot;</span><span class="p">);</span>
     <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
         <span class="nx">url</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span>
-        <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;standard&#39;</span><span class="o">:</span> <span class="nx">standardId</span>
-        <span class="p">},</span>
         <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_material&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">});</span>
-    <span class="nx">updatePressureInterpolation</span><span class="p">();</span>
-<span class="p">});</span>
-
-<span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_material&quot;</span><span class="p">).</span><span class="nx">change</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#resultsPressureForm&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-groups-url&quot;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">materialId</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
-    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
-        <span class="nx">url</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span>
-        <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;material&#39;</span><span class="o">:</span> <span class="nx">materialId</span>
-        <span class="p">},</span>
-        <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_group&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">});</span>
-
-
+<span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Updates Standard field with Ajax request and Html response based on MaterialId</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kd">function</span> <span class="nx">updateStandard</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#resultsPressureForm&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-standards-url&quot;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">materialId</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">materialId</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;id_material&quot;</span><span class="p">)).</span><span class="nx">val</span><span class="p">();</span>
     <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
         <span class="nx">url</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span>
         <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
@@ -155,27 +176,95 @@
             <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_standard&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">});</span>
+<span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Updates Material field with Ajax request and Html response based on StandardId</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kd">function</span> <span class="nx">updateMaterial</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#resultsPressureForm&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-materials-url&quot;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">standardId</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;id_standard&quot;</span><span class="p">)).</span><span class="nx">val</span><span class="p">();</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+        <span class="nx">url</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span>
+        <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s1">&#39;standard&#39;</span><span class="o">:</span> <span class="nx">standardId</span>
+        <span class="p">},</span>
+        <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_material&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Initiates Material update on Standard change</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_standard&quot;</span><span class="p">).</span><span class="nx">change</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">updateMaterial</span><span class="p">();</span>
+<span class="p">});</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Initiates Interpolation, Standard, Table and Notes update on InputTemperatureValue change</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_material&quot;</span><span class="p">).</span><span class="nx">change</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">updateStandard</span><span class="p">();</span>
 
     <span class="kd">var</span> <span class="nx">materialId</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">materialId</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#resultsPressureForm&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-re-load-materials-url&quot;</span><span class="p">);</span>
-        <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
-            <span class="nx">url</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span>
-            <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_material&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">});</span>
+        <span class="nx">reLoadMaterial</span><span class="p">();</span>
     <span class="p">}</span>
+
     <span class="nx">updateTable</span><span class="p">();</span>
     <span class="nx">updatePressureInterpolation</span><span class="p">();</span>
     <span class="nx">updateNotes</span><span class="p">();</span>
-<span class="p">});</span>
-
-<span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_pressure_class&quot;</span><span class="p">).</span><span class="nx">change</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<span class="p">});</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Initiates Interpolation update on PressureClass change</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_pressure_class&quot;</span><span class="p">).</span><span class="nx">change</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="nx">updatePressureInterpolation</span><span class="p">();</span>
-<span class="p">});</span>
-
-<span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_temperature&quot;</span><span class="p">).</span><span class="nx">change</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<span class="p">});</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Initiates Interpolation and Notes update on InputTemperatureValue change</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#id_temperature&quot;</span><span class="p">).</span><span class="nx">change</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="nx">updatePressureInterpolation</span><span class="p">();</span>
     <span class="nx">updateNotes</span><span class="p">();</span>
 <span class="p">});</span>

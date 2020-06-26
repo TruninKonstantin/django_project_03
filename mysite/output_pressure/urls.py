@@ -15,7 +15,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Link for Home page
+    # Link for Home page, also specified in mysite/urls.py
     path('pressure_calculation/', views.ResultView.as_view(), name='output_pressure_calculation'),
     # Links for Ajax requests
     path('ajax/load-materials/', views.load_materials_on_standard_change, name='ajax_load_materials'),

@@ -29,7 +29,7 @@ from .forms import ResultsForm
 from .models import Results, Material, Group, Pressure, Standard
 
 
-# === home ===
+# Class for ** Home ** view
 class ResultView(CreateView):
     model = Results
     form_class = ResultsForm

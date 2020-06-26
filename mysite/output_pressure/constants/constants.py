@@ -12,7 +12,7 @@
 
 from enum import Enum
 
-
+# Class for constants
 class Constants(Enum):
     TEMPERATURE_FIELD_NAMES = ['pressure_m29', 'pressure_38', 'pressure_50', 'pressure_100',
         'pressure_150', 'pressure_200', 'pressure_250', 'pressure_300', 'pressure_325', 'pressure_350',

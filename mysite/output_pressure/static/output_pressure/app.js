@@ -10,7 +10,7 @@
 // * [[app.js]]
 // * [[constants.py]]
 
-// Updates interpolation field with Ajax request and Json response
+// Updates InterpolationPressure field with Ajax request and Json response based on PressureClass, MaterialId, InputTemperatureValue
 function updatePressureInterpolation() {
     var url = $("#resultsPressureForm").attr("data-interpolated-pressure-url");
 
@@ -36,7 +36,7 @@ function updatePressureInterpolation() {
     }
 }
 
-
+// Updates Table field with Ajax request and Json response based on GroupId found with from MaterialId
 function updateTable() {
     var url = $("#resultsPressureForm").attr("data-update-table-url");
 
@@ -58,6 +58,7 @@ function updateTable() {
     }
 }
 
+// Updates Notes field with Ajax request and Json response based on MaterialId and InputTemperatureValue
 function updateNotes() {
     var url = $("#resultsPressureForm").attr("data-update-notes-url");
 
@@ -83,37 +84,21 @@ function updateNotes() {
     }
 }
 
-$("#id_standard").change(function() {
-    var url = $("#resultsPressureForm").attr("data-materials-url");
-    var standardId = $(this).val();
+// Re-Load all Materials with Ajax request and Html response
+function reLoadMaterial() {
+    var url = $("#resultsPressureForm").attr("data-re-load-materials-url");
     $.ajax({
         url: url,
-        data: {
-            'standard': standardId
-        },
         success: function(data) {
             $("#id_material").html(data);
         }
     });
-    updatePressureInterpolation();
-});
+}
 
-$("#id_material").change(function() {
-    var url = $("#resultsPressureForm").attr("data-groups-url");
-    var materialId = $(this).val();
-    $.ajax({
-        url: url,
-        data: {
-            'material': materialId
-        },
-        success: function(data) {
-            $("#id_group").html(data);
-        }
-    });
-
-
+// Updates Standard field with Ajax request and Html response based on MaterialId
+function updateStandard() {
     var url = $("#resultsPressureForm").attr("data-standards-url");
-    var materialId = $(this).val();
+    var materialId = $(document.getElementById("id_material")).val();
     $.ajax({
         url: url,
         data: {
@@ -123,26 +108,52 @@ $("#id_material").change(function() {
             $("#id_standard").html(data);
         }
     });
+}
+
+// Updates Material field with Ajax request and Html response based on StandardId
+function updateMaterial() {
+    var url = $("#resultsPressureForm").attr("data-materials-url");
+    var standardId = $(document.getElementById("id_standard")).val();
+    $.ajax({
+        url: url,
+        data: {
+            'standard': standardId
+        },
+        success: function(data) {
+            $("#id_material").html(data);
+        }
+    });
+}
+
+
+
+// Initiates Material update on Standard change
+$("#id_standard").change(function() {
+    updateMaterial();
+});
+
+// Initiates Interpolation, Standard, Table and Notes update on InputTemperatureValue change
+$("#id_material").change(function() {
+
+    updateStandard();
 
     var materialId = $(this).val();
     if (materialId == '') {
-        var url = $("#resultsPressureForm").attr("data-re-load-materials-url");
-        $.ajax({
-            url: url,
-            success: function(data) {
-                $("#id_material").html(data);
-            }
-        });
+        reLoadMaterial();
     }
+
     updateTable();
     updatePressureInterpolation();
     updateNotes();
 });
 
+// Initiates Interpolation update on PressureClass change
 $("#id_pressure_class").change(function() {
     updatePressureInterpolation();
 });
 
+
+// Initiates Interpolation and Notes update on InputTemperatureValue change
 $("#id_temperature").change(function() {
     updatePressureInterpolation();
     updateNotes();

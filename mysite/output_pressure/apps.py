@@ -12,6 +12,6 @@
 
 from django.apps import AppConfig
 
-
+# App name
 class OutputPressureConfig(AppConfig):
     name = 'output_pressure'

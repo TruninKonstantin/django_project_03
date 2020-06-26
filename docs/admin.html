@@ -31,11 +31,7 @@
 </ul>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
-<span class="kn">from</span> <span class="nn">import_export.admin</span> <span class="kn">import</span> <span class="n">ImportExportModelAdmin</span>
-
-<span class="kn">from</span> <span class="nn">.constants.constants</span> <span class="kn">import</span> <span class="n">Constants</span>
-<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Group</span><span class="p">,</span> <span class="n">Material</span><span class="p">,</span> <span class="n">PressureClass</span><span class="p">,</span> <span class="n">Pressure</span><span class="p">,</span> <span class="n">Standard</span></pre></div>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -44,11 +40,13 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      
+      <p>Class for implementation of import-export feature</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">GroupAdmin</span><span class="p">(</span><span class="n">ImportExportModelAdmin</span><span class="p">):</span>
-    <span class="k">pass</span></pre></div>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">import_export.admin</span> <span class="kn">import</span> <span class="n">ImportExportModelAdmin</span>
+
+<span class="kn">from</span> <span class="nn">.constants.constants</span> <span class="kn">import</span> <span class="n">Constants</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Group</span><span class="p">,</span> <span class="n">Material</span><span class="p">,</span> <span class="n">PressureClass</span><span class="p">,</span> <span class="n">Pressure</span><span class="p">,</span> <span class="n">Standard</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -60,7 +58,7 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">StandardAdmin</span><span class="p">(</span><span class="n">ImportExportModelAdmin</span><span class="p">):</span>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">GroupAdmin</span><span class="p">(</span><span class="n">ImportExportModelAdmin</span><span class="p">):</span>
     <span class="k">pass</span></pre></div>
     </div>
   </div>
@@ -73,9 +71,8 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">MaterialAdmin</span><span class="p">(</span><span class="n">ImportExportModelAdmin</span><span class="p">):</span>
-    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;standard&#39;</span><span class="p">,</span> <span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="s">&#39;t_min&#39;</span><span class="p">,</span> <span class="s">&#39;t_max&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">StandardAdmin</span><span class="p">(</span><span class="n">ImportExportModelAdmin</span><span class="p">):</span>
+    <span class="k">pass</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -87,8 +84,7 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">PressureClassAdmin</span><span class="p">(</span><span class="n">ImportExportModelAdmin</span><span class="p">):</span>
-    <span class="k">pass</span></pre></div>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">MaterialAdmin</span><span class="p">(</span><span class="n">ImportExportModelAdmin</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -97,11 +93,48 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
+      <p>Fields that will be shown on admin page</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;standard&#39;</span><span class="p">,</span> <span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="s">&#39;t_min&#39;</span><span class="p">,</span> <span class="s">&#39;t_max&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">PressureAdmin</span><span class="p">(</span><span class="n">ImportExportModelAdmin</span><span class="p">):</span>
-    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">PressureClassAdmin</span><span class="p">(</span><span class="n">ImportExportModelAdmin</span><span class="p">):</span>
+    <span class="k">pass</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">PressureAdmin</span><span class="p">(</span><span class="n">ImportExportModelAdmin</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Fields that will be shown on admin page</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_class&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
