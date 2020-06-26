@@ -1,4 +1,17 @@
+# Links to files:
+#
+# * [[admin.py]]
+# * [[apps.py]]
+# * [[forms.py]]
+# * [[models.py]]
+# * [[tests.py]]
+# * [[urls.py]]
+# * [[views.py]]
+# * [[app.js]]
+# * [[constants.py]]
+
 from django.contrib import admin
+# Class for implementation of import-export feature
 from import_export.admin import ImportExportModelAdmin
 
 from .constants.constants import Constants
@@ -14,6 +27,7 @@ class StandardAdmin(ImportExportModelAdmin):
 
 
 class MaterialAdmin(ImportExportModelAdmin):
+    # Fields that will be shown on admin page
     list_display = (
         'name', 'standard', 'group', 't_min', 't_max')
 
@@ -23,6 +37,7 @@ class PressureClassAdmin(ImportExportModelAdmin):
 
 
 class PressureAdmin(ImportExportModelAdmin):
+    # Fields that will be shown on admin page
     list_display = (
         'name', 'group', 'pressure_class',
     )

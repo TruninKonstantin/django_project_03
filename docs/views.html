@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>views.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>views.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Links to files:</p>
+<ul>
+<li><a href="admin.html">admin.py</a></li>
+<li><a href="apps.html">apps.py</a></li>
+<li><a href="forms.html">forms.py</a></li>
+<li><a href="models.html">models.py</a></li>
+<li><a href="tests.html">tests.py</a></li>
+<li><a href="urls.html">urls.py</a></li>
+<li><a href="views.html">views.py</a></li>
+<li><a href="app.html">app.js</a></li>
+<li><a href="constants.html">constants.py</a></li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>All the views for our Pressure calculation application
+Currently we support the only one views:</p>
+<ol>
+<li><strong>Home</strong> - The main view for Pressure calculation (jump to section in  <a href="views.html#home">views.py</a> )</li>
+</ol>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">JsonResponse</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">CreateView</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>defined in  <a href="constants.html">constants.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">.constants.constants</span> <span class="kn">import</span> <span class="n">Constants</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>defined in  <a href="forms.html">forms.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">ResultsForm</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>defined in  <a href="models.html">models.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Results</span><span class="p">,</span> <span class="n">Material</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span> <span class="n">Pressure</span><span class="p">,</span> <span class="n">Standard</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Class for <strong> Home </strong> view</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ResultView</span><span class="p">(</span><span class="n">CreateView</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Results</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">ResultsForm</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;output_pressure/pressure_calculation.html&#39;</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s">&#39;output_pressure_calculation&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <ul>
+<li>Returns list of all Materials from DB.</li>
+<li>Ajax request.</li>
+<li>Html response.</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">reload_materials</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">materials</span> <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;output_pressure/material_dropdown_list_options.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;materials&#39;</span><span class="p">:</span> <span class="n">materials</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <ul>
+<li>Updates the list of Materials on Standard change.</li>
+<li>Ajax request.</li>
+<li>Html response.</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">load_materials_on_standard_change</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">standard_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;standard&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">standard_id</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">materials</span> <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">materials</span> <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">standard_id</span><span class="o">=</span><span class="n">standard_id</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;output_pressure/material_dropdown_list_options.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;materials&#39;</span><span class="p">:</span> <span class="n">materials</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <ul>
+<li>Updates the list of Groups on Standard change.</li>
+<li>Ajax request.</li>
+<li>Html response.</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">load_groups_on_material_changed</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">material_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;material&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">material_id</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;output_pressure/group_dropdown_list_options.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;groups&#39;</span><span class="p">:</span> <span class="n">groups</span><span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">field_name</span> <span class="o">=</span> <span class="s">&#39;group_id&#39;</span>
+        <span class="n">material_obj</span> <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">material_id</span><span class="p">)</span>
+        <span class="n">group_id</span> <span class="o">=</span> <span class="n">get_field_value</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">Material</span><span class="p">,</span> <span class="n">material_obj</span><span class="p">)</span>
+
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">group_id</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;output_pressure/group_dropdown_one.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;groups&#39;</span><span class="p">:</span> <span class="n">groups</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <ul>
+<li>Updates the list of Standards on Material change.</li>
+<li>Ajax request.</li>
+<li>Html response.</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">load_standards_on_material_changed</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">material_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;material&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">material_id</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">standards</span> <span class="o">=</span> <span class="n">Standard</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;output_pressure/standard_dropdown_list_options.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;standards&#39;</span><span class="p">:</span> <span class="n">standards</span><span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">field_name</span> <span class="o">=</span> <span class="s">&#39;standard_id&#39;</span>
+        <span class="n">material_obj</span> <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">material_id</span><span class="p">)</span>
+        <span class="n">standard_id</span> <span class="o">=</span> <span class="n">get_field_value</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">Material</span><span class="p">,</span> <span class="n">material_obj</span><span class="p">)</span>
+
+        <span class="n">standards</span> <span class="o">=</span> <span class="n">Standard</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">standard_id</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;output_pressure/standard_dropdown_one.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;standards&#39;</span><span class="p">:</span> <span class="n">standards</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <ul>
+<li>Returns interpolated value of pressure to home view.</li>
+<li>Ajax request.</li>
+<li>Json response.</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">interpolate_pressure</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">pressure_class_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pressure_class&#39;</span><span class="p">)</span>
+    <span class="n">material_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;material&#39;</span><span class="p">)</span>
+    <span class="n">input_temperature</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;input_temperature&#39;</span><span class="p">)</span>
+
+    <span class="n">field_name</span> <span class="o">=</span> <span class="s">&#39;group_id&#39;</span>
+    <span class="n">material_obj</span> <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">material_id</span><span class="p">)</span>
+    <span class="n">group_id</span> <span class="o">=</span> <span class="n">get_field_value</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">Material</span><span class="p">,</span> <span class="n">material_obj</span><span class="p">)</span>
+
+    <span class="n">pressures</span> <span class="o">=</span> <span class="n">Pressure</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">group_id</span><span class="o">=</span><span class="n">group_id</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pressure_class_id</span><span class="o">=</span><span class="n">pressure_class_id</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">pressure_object</span> <span class="o">=</span> <span class="n">pressures</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="n">temperature_field_names</span> <span class="o">=</span> <span class="n">Constants</span><span class="o">.</span><span class="n">TEMPERATURE_FIELD_NAMES</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="n">all_fields</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">temperature_field_names</span><span class="p">:</span>
+        <span class="n">all_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pressure_object</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">))</span>
+
+    <span class="n">field_temperature_lower_input</span> <span class="o">=</span> <span class="n">pressure_object</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">Constants</span><span class="o">.</span><span class="n">LOWEST_TEMPERATURE_FIELD_NAME</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">field_temperature_higher_input</span> <span class="o">=</span> <span class="n">pressure_object</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">Constants</span><span class="o">.</span><span class="n">HIGHEST_TEMPERATURE_FIELD_NAME</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">all_fields</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">get_temperature_from_field_name</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_temperature</span><span class="p">):</span>
+            <span class="n">field_temperature_lower_input</span> <span class="o">=</span> <span class="n">field</span>
+        <span class="k">if</span> <span class="n">get_temperature_from_field_name</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_temperature</span><span class="p">):</span>
+            <span class="n">field_temperature_higher_input</span> <span class="o">=</span> <span class="n">field</span>
+            <span class="k">break</span>
+
+    <span class="n">interpolated_pressure</span> <span class="o">=</span> <span class="n">interpolation</span><span class="p">(</span><span class="n">input_temperature</span><span class="p">,</span> <span class="n">field_temperature_lower_input</span><span class="p">,</span>
+                                          <span class="n">field_temperature_higher_input</span><span class="p">,</span>
+                                          <span class="n">Pressure</span><span class="p">,</span> <span class="n">pressure_object</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;interpolated_pressure&#39;</span><span class="p">:</span> <span class="n">interpolated_pressure</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <ul>
+<li>Updates the Table field.</li>
+<li>Ajax request.</li>
+<li>Json response.</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">update_table</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">material_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;material&#39;</span><span class="p">)</span>
+
+    <span class="n">field_name</span> <span class="o">=</span> <span class="s">&#39;group_id&#39;</span>
+    <span class="n">material_obj</span> <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">material_id</span><span class="p">)</span>
+    <span class="n">group_id</span> <span class="o">=</span> <span class="n">get_field_value</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">Material</span><span class="p">,</span> <span class="n">material_obj</span><span class="p">)</span>
+
+    <span class="n">group_obj</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">group_id</span><span class="p">)</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">get_field_value</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span> <span class="n">group_obj</span><span class="p">)</span>
+    <span class="n">str_table</span> <span class="o">=</span> <span class="s">&quot;Table 2-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;str_table&#39;</span><span class="p">:</span> <span class="n">str_table</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <ul>
+<li>Updates the Notes field.</li>
+<li>Ajax request.</li>
+<li>Json response.</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">update_notes</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">material_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;material&#39;</span><span class="p">)</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;temperature_value&#39;</span><span class="p">))</span>
+
+    <span class="n">material_obj</span> <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">material_id</span><span class="p">)</span>
+    <span class="n">material_minimum_temperature</span> <span class="o">=</span> <span class="n">get_field_value</span><span class="p">(</span><span class="s">&quot;t_min&quot;</span><span class="p">,</span> <span class="n">Material</span><span class="p">,</span> <span class="n">material_obj</span><span class="p">)</span>
+    <span class="n">material_maximum_temperature</span> <span class="o">=</span> <span class="n">get_field_value</span><span class="p">(</span><span class="s">&quot;t_max&quot;</span><span class="p">,</span> <span class="n">Material</span><span class="p">,</span> <span class="n">material_obj</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">material_minimum_temperature</span> <span class="o">&lt;=</span> <span class="n">temperature</span> <span class="o">&lt;=</span> <span class="n">material_maximum_temperature</span><span class="p">:</span>
+        <span class="n">str_note</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">You are inside material temperature range&quot;</span>
+        <span class="n">textarea_class</span> <span class="o">=</span> <span class="s">&quot;color_white&quot;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">str_note</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">You are outside material temperature range&quot;</span>
+        <span class="n">textarea_class</span> <span class="o">=</span> <span class="s">&quot;color_red&quot;</span>
+
+    <span class="n">str_material_temperatures</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;Material minimum temperature =&quot;</span>
+                                 <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">material_minimum_temperature</span><span class="p">)</span>
+                                 <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Material maximun temperature =&quot;</span>
+                                 <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">material_maximum_temperature</span><span class="p">))</span>
+
+    <span class="n">str_temperatures</span> <span class="o">=</span> <span class="p">(</span><span class="n">str_material_temperatures</span> <span class="o">+</span> <span class="n">str_note</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;str_temperatures&#39;</span><span class="p">:</span> <span class="n">str_temperatures</span><span class="p">,</span> <span class="s">&#39;textarea_class&#39;</span><span class="p">:</span> <span class="n">textarea_class</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <ul>
+<li>Returns interpolated pressure.</li>
+<li>inputs:     input_temperature  &ndash; temperature from view,
+              field_temperature_lower_input  &ndash; field with the temperature lower than input_temperature,
+              field_temperature_higher_input &ndash; field with the temperature higher than input_temperature,
+              MyModel &ndash; Model of the field,
+              my_model_obj &ndash; Object of the field,</li>
+<li>output:     interpolated_pressure</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">interpolation</span><span class="p">(</span><span class="n">input_temperature</span><span class="p">,</span> <span class="n">field_temperature_lower_input</span><span class="p">,</span> <span class="n">field_temperature_higher_input</span><span class="p">,</span> <span class="n">MyModel</span><span class="p">,</span>
+                  <span class="n">my_model_obj</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">field_temperature_lower_input</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">field_temperature_higher_input</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+        <span class="n">output_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">get_field_value</span><span class="p">(</span><span class="n">field_temperature_lower_input</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">MyModel</span><span class="p">,</span> <span class="n">my_model_obj</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x_one</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">field_temperature_lower_input</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">Constants</span><span class="o">.</span><span class="n">STR_PART_PRESSURE_FIELD</span><span class="o">.</span><span class="n">value</span><span class="p">)[</span>
+                          <span class="n">Constants</span><span class="o">.</span><span class="n">NUMBER_POSITION_AFTER_SPLIT</span><span class="o">.</span><span class="n">value</span><span class="p">])</span>
+        <span class="n">y_one</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">get_field_value</span><span class="p">(</span><span class="n">field_temperature_lower_input</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">MyModel</span><span class="p">,</span> <span class="n">my_model_obj</span><span class="p">))</span>
+
+        <span class="n">x_two</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">field_temperature_higher_input</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">Constants</span><span class="o">.</span><span class="n">STR_PART_PRESSURE_FIELD</span><span class="o">.</span><span class="n">value</span><span class="p">)[</span>
+                          <span class="n">Constants</span><span class="o">.</span><span class="n">NUMBER_POSITION_AFTER_SPLIT</span><span class="o">.</span><span class="n">value</span><span class="p">])</span>
+        <span class="n">y_two</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">get_field_value</span><span class="p">(</span><span class="n">field_temperature_higher_input</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">MyModel</span><span class="p">,</span> <span class="n">my_model_obj</span><span class="p">))</span>
+
+        <span class="n">input_temperature</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_temperature</span><span class="p">)</span>
+
+        <span class="n">output_value</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_two</span> <span class="o">-</span> <span class="n">y_one</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_two</span> <span class="o">-</span> <span class="n">x_one</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">input_temperature</span> <span class="o">-</span> <span class="n">x_one</span><span class="p">)</span> <span class="o">+</span> <span class="n">y_one</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">output_value</span><span class="p">,</span> <span class="n">Constants</span><span class="o">.</span><span class="n">NUMBER_OF_DECIMALS</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <ul>
+<li>Returns field value.</li>
+<li>inputs:   field_name &ndash; field name,
+          MyModel &ndash; Model of the field,
+          my_model_obj &ndash; Object of the field,</li>
+<li>output:   field_value</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">get_field_value</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">MyModel</span><span class="p">,</span> <span class="n">my_model_obj</span><span class="p">):</span>
+    <span class="n">field_object</span> <span class="o">=</span> <span class="n">MyModel</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">field_object</span><span class="o">.</span><span class="n">value_from_object</span><span class="p">(</span><span class="n">my_model_obj</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <ul>
+<li>Returns temperature from field.</li>
+<li>inputs:   field &ndash; field,</li>
+<li>output:   temperature</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">get_temperature_from_field_name</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">Constants</span><span class="o">.</span><span class="n">STR_PART_PRESSURE_FIELD</span><span class="o">.</span><span class="n">value</span><span class="p">)[</span><span class="n">Constants</span><span class="o">.</span><span class="n">NUMBER_POSITION_AFTER_SPLIT</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">Constants</span><span class="o">.</span><span class="n">STR_FOR_MINUS</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="n">temperature</span><span class="p">:</span>
+        <span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">Constants</span><span class="o">.</span><span class="n">STR_FOR_MINUS</span><span class="o">.</span><span class="n">value</span><span class="p">)[</span><span class="n">Constants</span><span class="o">.</span><span class="n">NUMBER_POSITION_AFTER_SPLIT</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

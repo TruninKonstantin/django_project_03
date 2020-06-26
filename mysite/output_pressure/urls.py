@@ -1,9 +1,23 @@
+# Links to files:
+#
+# * [[admin.py]]
+# * [[apps.py]]
+# * [[forms.py]]
+# * [[models.py]]
+# * [[tests.py]]
+# * [[urls.py]]
+# * [[views.py]]
+# * [[app.js]]
+# * [[constants.py]]
+
 from django.urls import path
 
 from . import views
 
 urlpatterns = [
+    # Link for Home page, also specified in mysite/urls.py
     path('pressure_calculation/', views.ResultView.as_view(), name='output_pressure_calculation'),
+    # Links for Ajax requests
     path('ajax/load-materials/', views.load_materials_on_standard_change, name='ajax_load_materials'),
     path('ajax/load-groups/', views.load_groups_on_material_changed, name='ajax_load_groups'),
     path('ajax/load-standards/', views.load_standards_on_material_changed, name='ajax_load_standards'),

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>constants.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>constants.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Links to files:</p>
+<ul>
+<li><a href="admin.html">admin.py</a></li>
+<li><a href="apps.html">apps.py</a></li>
+<li><a href="forms.html">forms.py</a></li>
+<li><a href="models.html">models.py</a></li>
+<li><a href="tests.html">tests.py</a></li>
+<li><a href="urls.html">urls.py</a></li>
+<li><a href="views.html">views.py</a></li>
+<li><a href="app.html">app.js</a></li>
+<li><a href="constants.html">constants.py</a></li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Class for constants</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Constants</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">TEMPERATURE_FIELD_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;pressure_m29&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_38&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_50&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_100&#39;</span><span class="p">,</span>
+        <span class="s">&#39;pressure_150&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_200&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_250&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_300&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_325&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_350&#39;</span><span class="p">,</span>
+        <span class="s">&#39;pressure_375&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_400&#39;</span><span class="p">,</span> <span class="s">&#39;pressure_425&#39;</span><span class="p">]</span>
+    <span class="n">LOWEST_TEMPERATURE_FIELD_NAME</span> <span class="o">=</span> <span class="s">&quot;pressure_m29&quot;</span>
+    <span class="n">HIGHEST_TEMPERATURE_FIELD_NAME</span> <span class="o">=</span> <span class="s">&quot;pressure_425&quot;</span>
+    <span class="n">STR_PART_PRESSURE_FIELD</span> <span class="o">=</span> <span class="s">&quot;pressure_&quot;</span>
+    <span class="n">STR_FOR_MINUS</span> <span class="o">=</span> <span class="s">&quot;m&quot;</span>
+    <span class="n">NUMBER_POSITION_AFTER_SPLIT</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">NUMBER_OF_DECIMALS</span> <span class="o">=</span> <span class="mi">3</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

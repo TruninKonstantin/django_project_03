@@ -1,9 +1,22 @@
+# Links to files:
+#
+# * [[admin.py]]
+# * [[apps.py]]
+# * [[forms.py]]
+# * [[models.py]]
+# * [[tests.py]]
+# * [[urls.py]]
+# * [[views.py]]
+# * [[app.js]]
+# * [[constants.py]]
+
 from django import forms
 
 from .models import Results, Material, Standard
 
 
 class ResultsForm(forms.ModelForm):
+    # Fields not from Model to be shown on View
     temperature = forms.FloatField()
     interpolated_pressure = forms.CharField(
         label="Interpolated pressure, bar"
@@ -18,7 +31,9 @@ class ResultsForm(forms.ModelForm):
                             ))
 
     class Meta:
+        # Model connection to form, see [[models.py]]
         model = Results
+        # Fields to be shown from the Model
         fields = ('standard',
                   'material',
                   'pressure_class')

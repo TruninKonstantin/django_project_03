@@ -1,6 +1,19 @@
+# Links to files:
+#
+# * [[admin.py]]
+# * [[apps.py]]
+# * [[forms.py]]
+# * [[models.py]]
+# * [[tests.py]]
+# * [[urls.py]]
+# * [[views.py]]
+# * [[app.js]]
+# * [[constants.py]]
+
 from django.db import models
 
 
+# Model for Standards (for example DIN, ASTM), just list of names.
 class Standard(models.Model):
     name = models.CharField(max_length=30)
 
@@ -8,6 +21,7 @@ class Standard(models.Model):
         return self.name
 
 
+# Model for Groups (for example 1.1, 1.3), just list of names.
 class Group(models.Model):
     name = models.CharField(max_length=30)
 
@@ -15,6 +29,12 @@ class Group(models.Model):
         return self.name
 
 
+# Model for Materials (for example A216 Gr.WCB, 1.0619+QT).
+#
+# **Fields**:
+#
+# * standard - connected through id to Standard Model
+# * group - connected through id to Group Model
 class Material(models.Model):
     name = models.CharField(max_length=30)
     standard = models.ForeignKey(Standard, on_delete=models.CASCADE)
@@ -26,6 +46,7 @@ class Material(models.Model):
         return self.name
 
 
+# Model for Pressure classes (for example class-300, class-600), just list of names.
 class PressureClass(models.Model):
     name = models.CharField(max_length=30)
 
@@ -33,7 +54,12 @@ class PressureClass(models.Model):
         return self.name
 
 
-# TODO add pressures for all temperatures
+# Model for pressure-temperature point. Each field that starts with pressure_ contain pressure in bars.
+# Temperature is stated in the field name. **m** stands for **minus**
+#
+# **Fields**:
+#
+# * group - connected through id to Group Model
 class Pressure(models.Model):
     name = models.CharField(max_length=30)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
@@ -56,6 +82,7 @@ class Pressure(models.Model):
         return str(self.name)
 
 
+# Model for Reflection on the view, used in **[[forms.py]]**
 class Results(models.Model):
     standard = models.ForeignKey(Standard, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
